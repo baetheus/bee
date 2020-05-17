@@ -1,7 +1,5 @@
 import { h, FunctionalComponent } from "preact";
 
-import { Game } from "../../stores/game";
-
 import { Hex } from "./Hex";
 
 interface HoneycombProps {

@@ -1,18 +1,7 @@
-import { h, FunctionalComponent, Fragment } from "preact";
-import { useCallback } from "preact/hooks";
+import { h, FunctionalComponent } from "preact";
 import { format, parseISO } from "date-fns";
 
-import {
-  useGameStore,
-  selectGameById,
-  Game as GameModel,
-  submitWord,
-  gamesL,
-  selectAvailableGames,
-} from "../stores/game";
-import { ErrorCard } from "../components/ErrorCard";
-import { Game } from "../components/Game";
-import { Found } from "../components/Game/Found";
+import { useGameStore, selectAvailableGames } from "../stores/game";
 import { DefaultLayout } from "../components/Layouts";
 import { Header } from "../components/Header";
 import { Link } from "preact-router";
