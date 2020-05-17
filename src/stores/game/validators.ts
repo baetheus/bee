@@ -12,3 +12,4 @@ export const GameStateCodec = C.type({
     })
   ),
 });
+export type GameStateCodec = C.TypeOf<typeof GameStateCodec>;

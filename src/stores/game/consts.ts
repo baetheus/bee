@@ -1,6 +1,9 @@
+import { none } from "fp-ts/es6/Option";
+
 import { GameState } from "./models";
 
 export const INITIAL_GAME_STATE: GameState = {
+  notification: none,
   games: {
     bdehint_n: {
       id: "bdehint_n",

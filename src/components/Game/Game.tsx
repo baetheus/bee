@@ -42,7 +42,7 @@ export const Game: FunctionalComponent<GameProps> = ({
   }, [word, setWord, onSubmit]);
 
   return (
-    <div class="fls-1-1 fld-col flg-6 ai-ctr jc-spb-on-sm">
+    <div class="fld-col flg-6 ai-ctr">
       <div class="vh-2 vw-p100 fs-u5 ta-c ovx-au fld-row ai-ctr jc-ctr ct-lighter">
         {word.split("").map(highlight(game.middle))}
       </div>
@@ -72,7 +72,7 @@ export const Game: FunctionalComponent<GameProps> = ({
           className="vw-p50 jc-ctr"
           theme="ct-honey ct-disabled-on-disabled"
           hover="ct-honey-dark-on-hover"
-          disabled={word.length <= 3}
+          disabled={word.length <= 3 || !word.includes(game.middle)}
           onClick={handleSubmit}
         >
           Enter

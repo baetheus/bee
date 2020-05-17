@@ -7,10 +7,10 @@ import {
   selectGameById,
   Game as GameModel,
   submitWord,
+  notificationL,
 } from "../stores/game";
 import { ErrorCard } from "../components/ErrorCard";
-import { Game } from "../components/Game";
-import { Found } from "../components/Game/Found";
+import { Game, Found, Notification } from "../components/Game";
 import { Header } from "../components/Header";
 import { DefaultLayout } from "../components/Layouts";
 
@@ -23,6 +23,7 @@ export const GamePage: FunctionalComponent<GamePageProps> = ({
 }) => {
   const selectGame = useCallback(selectGameById(id), [id]);
   const [game, dispatch] = useGameStore(selectGame);
+  const [notification] = useGameStore(notificationL.get);
 
   const handleSubmit = useCallback(
     (guess: string) => dispatch(submitWord({ id, guess })),
@@ -41,8 +42,9 @@ export const GamePage: FunctionalComponent<GamePageProps> = ({
         ),
         (game: GameModel) => (
           <Fragment>
-            <Found game={game} />
+            <Notification notification={notification} />
             <Game game={game} onSubmit={handleSubmit} />
+            <Found game={game} />
           </Fragment>
         )
       )(game)}
