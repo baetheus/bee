@@ -53,6 +53,11 @@ ol {
   list-style-type: none;
 }
 
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
 /** Utility */
 .vw-px300 {
   width: 300px;

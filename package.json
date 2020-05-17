@@ -6,6 +6,7 @@
   "devDependencies": {
     "@babel/plugin-transform-react-jsx": "^7.9.4",
     "@babel/preset-typescript": "^7.9.0",
+    "@types/date-fns": "^2.6.0",
     "babel-plugin-module-resolver": "^4.0.0",
     "parcel": "^2.0.0-alpha.3.2",
     "sass": "^1.26.5",
@@ -15,6 +16,7 @@
     "@nll/css": "^9.7.0",
     "@nll/datum": "^3.1.0",
     "@nll/dux": "^8.1.4",
+    "date-fns": "^2.13.0",
     "fp-ts": "^2.6.1",
     "io-ts": "^2.2.2",
     "monocle-ts": "^2.1.0",

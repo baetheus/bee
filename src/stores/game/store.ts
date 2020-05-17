@@ -1,39 +1,20 @@
 import { useState, useEffect, useCallback } from "preact/hooks";
+import { Lens, Optional } from "monocle-ts";
 import { createStore } from "@nll/dux/Store";
 import { actionCreatorFactory } from "@nll/dux/Actions";
 import { useStoreFactory, useDispatchFactory } from "@nll/dux/React";
-import { DatumEither, success, initial, map } from "@nll/datum/DatumEither";
-import { pipe } from "fp-ts/es6/pipeable";
-import { Lens, Optional } from "monocle-ts";
-
-import { Game } from "./models";
 import { caseFn } from "@nll/dux/Reducers";
-import {
-  fromUndefined,
-  getOrElse,
-  seqTDatumEither,
-  datumEitherL,
-} from "../../libs/datum";
-import { logger } from "../../libs/dux";
+import { isBefore, parseISO, endOfToday } from "date-fns";
+
+import { GameState } from "./models";
+import { logger, createStateRestore } from "../../libs/dux";
 import { eqInsensitive } from "../../libs/strings";
+import { INITIAL_GAME_STATE } from "./consts";
+import { GameStateCodec } from "./validators";
 
 /** Setup Store */
 const action = actionCreatorFactory("GAME_STORE");
 
-interface GameState {
-  games: Record<string, DatumEither<Error, Game>>;
-}
-const INITIAL_GAME_STATE: GameState = {
-  games: {
-    new: success({
-      id: "new",
-      chars: ["G", "B", "W", "I", "T", "E"],
-      middle: "L",
-      dictionary: ["lilt", "glib", "glee", "bite", "gibe", "will", "gill"],
-      found: ["LILT", "GLIB", "GLEE", "BITE", "GIBE", "WILL", "GILL"],
-    }),
-  },
-};
 export const gameStore = createStore(INITIAL_GAME_STATE).addMetaReducers(
   logger()
 );
@@ -42,11 +23,9 @@ export const useGameDispatch = useDispatchFactory(gameStore, useCallback);
 
 /** Lenses */
 const rootProp = Lens.fromProp<GameState>();
-const gamesL = rootProp("games");
-const gameG = (id: string) =>
-  gamesL
-    .compose(Lens.fromNullableProp<GameState["games"]>()(id, initial))
-    .composeOptional(datumEitherL());
+export const gamesL = rootProp("games");
+export const gameG = (id: string) =>
+  gamesL.composeOptional(Optional.fromNullableProp<GameState["games"]>()(id));
 
 /** Submit Word */
 export const submitWord = action.simple<{ id: string; guess: string }>(
@@ -67,6 +46,15 @@ const submitWordCase = caseFn(
 );
 gameStore.addReducers(submitWordCase);
 
+/** Storage */
+const storage = createStateRestore(GameStateCodec, "GAME_STATE");
+storage.wireup(gameStore);
+
 /** Selectors */
-export const selectGameById = (id: string) => (s: GameState) =>
-  s.games[id] ?? initial;
+export const selectGameById = (id: string) => gameG(id).getOption;
+export const selectAvailableGames = (s: GameState) => {
+  const gs = gamesL.get(s);
+  return Object.keys(gs)
+    .map((key) => gs[key])
+    .filter((game) => isBefore(parseISO(game.date), endOfToday()));
+};

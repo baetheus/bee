@@ -2,12 +2,11 @@ import { h, FunctionalComponent } from "preact";
 import { useState, useCallback } from "preact/hooks";
 import { MdRefresh } from "react-icons/md";
 
-import { Game as GameModel, SavedGame } from "../../stores/game";
+import { Game as GameModel } from "../../stores/game";
 
 import { Button } from "../Button";
 
 import { Honeycomb } from "./Honeycomb";
-import { Found } from "./Found";
 import { shuffle } from "../../libs/arrays";
 
 interface GameProps {

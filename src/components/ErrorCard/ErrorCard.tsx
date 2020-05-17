@@ -22,11 +22,11 @@ export const ErrorCard: FunctionalComponent<ErrorCardProps> = ({
   const formattedError = formatError(error);
 
   return (
-    <article class="pwa-4 bra-1 ct-error">
+    <div class="pwa-4 bra-1 ct-error">
       <h2>{title}</h2>
       {notNil(formattedError) ? (
         <pre class="ova-au">{formattedError}</pre>
       ) : null}
-    </article>
+    </div>
   );
 };

@@ -7,4 +7,9 @@ export type Game = {
   middle: Char;
   dictionary: string[];
   found: string[];
+  date: string;
 };
+
+export interface GameState {
+  games: Record<string, Game>;
+}
