@@ -6,10 +6,5 @@ export type Game = {
   chars: Chars;
   middle: Char;
   dictionary: string[];
-};
-
-export type SavedGame = {
-  id: string;
-  player: string;
   found: string[];
 };

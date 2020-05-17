@@ -1,3 +1,4 @@
+/** Reset */
 html,
 body {
   min-height: 100vh;
@@ -24,7 +25,7 @@ body > main {
 }
 
 button {
-  font-size: initial;
+  font-size: inherit;
 }
 
 // Reset
@@ -65,8 +66,8 @@ ol {
   max-width: 500px;
 }
 
-@media (max-height: 550px) {
-  .jc-spb-vh550 {
+@media (max-height: 750px) {
+  .jc-spb-on-sm {
     justify-content: space-between;
   }
 }

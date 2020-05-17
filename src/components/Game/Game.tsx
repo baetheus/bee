@@ -1,5 +1,6 @@
 import { h, FunctionalComponent } from "preact";
 import { useState, useCallback } from "preact/hooks";
+import { MdRefresh } from "react-icons/md";
 
 import { Game as GameModel, SavedGame } from "../../stores/game";
 
@@ -7,6 +8,7 @@ import { Button } from "../Button";
 
 import { Honeycomb } from "./Honeycomb";
 import { Found } from "./Found";
+import { shuffle } from "../../libs/arrays";
 
 interface GameProps {
   game: GameModel;
@@ -27,6 +29,9 @@ export const Game: FunctionalComponent<GameProps> = ({
   onSubmit = () => {},
 }) => {
   const [word, setWord] = useState("");
+  const [chars, setChars] = useState(game.chars);
+  const handleShuffle = useCallback(() => setChars(shuffle), [setChars]);
+
   const handleClear = useCallback(() => setWord(""), [setWord]);
   const handleLetterClick = useCallback(
     (char: string) => setWord((w) => (w.length < MAX_WORD_SIZE ? w + char : w)),
@@ -38,14 +43,18 @@ export const Game: FunctionalComponent<GameProps> = ({
   }, [word, setWord, onSubmit]);
 
   return (
-    <div class="fls-1-1 fld-col flg-6 ai-ctr jc-spb-vh550">
+    <div class="fls-1-1 fld-col flg-6 ai-ctr jc-spb-on-sm">
       <div class="vh-2 vw-p100 fs-u5 ta-c ovx-au fld-row ai-ctr jc-ctr ct-lighter">
         {word.split("").map(highlight(game.middle))}
       </div>
-      <Honeycomb game={game} onClickLetter={handleLetterClick} />
-      <div class="vw-px300 fld-row flg-4">
+      <Honeycomb
+        chars={chars}
+        middle={game.middle}
+        onClickLetter={handleLetterClick}
+      />
+      <div class="vw-px300 fld-row flg-4 fs-u3">
         <Button
-          className="vw-p50 jc-ctr fs-u3"
+          className="vw-p50 jc-ctr"
           theme="ct-honey ct-disabled-on-disabled"
           hover="ct-honey-dark-on-hover"
           disabled={word.length === 0}
@@ -54,7 +63,14 @@ export const Game: FunctionalComponent<GameProps> = ({
           Clear
         </Button>
         <Button
-          className="vw-p50 jc-ctr fs-u3"
+          theme="ct-honey ct-disabled-on-disabled"
+          hover="ct-honey-dark-on-hover"
+          onClick={handleShuffle}
+        >
+          <MdRefresh />
+        </Button>
+        <Button
+          className="vw-p50 jc-ctr"
           theme="ct-honey ct-disabled-on-disabled"
           hover="ct-honey-dark-on-hover"
           disabled={word.length <= 3}
