@@ -46,8 +46,29 @@ textarea {
   border: 0;
 }
 
+ul,
+ol {
+  list-style-position: inside;
+  list-style-type: none;
+}
+
+/** Utility */
 .vw-px300 {
   width: 300px;
+}
+
+.vwmx-px300 {
+  max-width: 300px;
+}
+
+.vwcmx-px500 > * {
+  max-width: 500px;
+}
+
+@media (max-height: 550px) {
+  .jc-spb-vh550 {
+    justify-content: space-between;
+  }
 }
 
 // Scrollbars
@@ -70,4 +91,20 @@ textarea {
 }
 ::-webkit-scrollbar-thumb:window-inactive {
   background: var(--cb-honey-dark);
+}
+
+/* Focus */
+a:focus,
+article:focus,
+input:focus,
+button:focus,
+textarea:focus {
+  outline: none;
+  box-shadow: 0 0 1.5px 1.5px var(--cb-focus);
+}
+
+.fit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(20%, 1fr));
+  grid-gap: var(--margin-width-4);
 }

@@ -1,6 +1,7 @@
-import { h, FunctionalComponent } from "preact";
+import { h, FunctionalComponent, Fragment } from "preact";
 import { useCallback, useEffect } from "preact/hooks";
 import { squash, isInitial } from "@nll/datum/DatumEither";
+import { GiBee } from "react-icons/gi";
 
 import {
   useGameStore,
@@ -15,18 +16,26 @@ import { LoadingCard } from "../components/LoadingCard";
 import { ErrorCard } from "../components/ErrorCard";
 import { Game } from "../components/Game";
 import { seqSDatumEither } from "../libs/datum";
+import { Found } from "../components/Game/Found";
 
 interface GamePageProps {
   id?: string;
 }
+
+type Data = {
+  game: GameModel;
+  save: SavedGame;
+};
 
 export const GamePage: FunctionalComponent<GamePageProps> = ({
   id = "new",
 }) => {
   const selectGame = useCallback(selectGameById(id), [id]);
   const [game, dispatch] = useGameStore(selectGame);
+
   const selectSave = useCallback(selectSaveById(id), [id]);
   const [save] = useGameStore(selectSave);
+
   const handleSubmit = useCallback(
     (guess: string) => dispatch(submitWord({ id, guess })),
     [id]
@@ -35,21 +44,27 @@ export const GamePage: FunctionalComponent<GamePageProps> = ({
   const data = seqSDatumEither({ game, save });
 
   useEffect(() => {
-    if (isInitial(game)) {
-      console.log("Get Game From Backend Here");
+    if (isInitial(data)) {
+      console.warn("Get game and save from backend here");
     }
   }, []);
 
   console.log("render");
 
   return (
-    <main class="vwcmx-rem0 vwc-p100 fld-col flg-6 ai-ctr pwa-4">
-      <h1>Bee</h1>
+    <main class="vwcmx-px500 vwc-p100 fld-col flg-4 ai-ctr pwa-4">
+      <h1 class="fld-row flg-4">
+        <GiBee />
+        <span>bee</span>
+      </h1>
       {squash(
         () => <LoadingCard title="Loading Game" />,
         (error) => <ErrorCard title="Error Loading Game" error={error} />,
-        (props: { game: GameModel; save: SavedGame }) => (
-          <Game {...props} onSubmit={handleSubmit} />
+        ({ game, save }: Data) => (
+          <Fragment>
+            <Found game={game} save={save} />
+            <Game game={game} onSubmit={handleSubmit} />
+          </Fragment>
         )
       )(data)}
     </main>

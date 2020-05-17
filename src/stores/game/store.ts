@@ -23,14 +23,14 @@ const INITIAL_GAME_STATE: GameState = {
       id: "new",
       chars: ["G", "B", "W", "I", "T", "E"],
       middle: "L",
-      dictionary: ["lilt", "glib"],
+      dictionary: ["lilt", "glib", "glee", "bite", "gibe", "will", "gill"],
     }),
   },
   saves: {
     new: success({
       id: "new",
       player: "Brandon",
-      found: [],
+      found: ["LILT", "GLIB", "GLEE", "BITE", "GIBE", "WILL", "GILL"],
     }),
   },
 };
@@ -50,9 +50,9 @@ const submitWordCase = caseFn(
     const isMatch = pipe(
       fromUndefined(s.games[id]),
       map((game) =>
-        game.chars
-          .concat(game.middle)
-          .every((char) => guess.toLowerCase().includes(char.toLowerCase()))
+        game.dictionary.some(
+          (word) => word.toLowerCase() === guess.toLowerCase()
+        )
       ),
       getOrElse(false)
     );
