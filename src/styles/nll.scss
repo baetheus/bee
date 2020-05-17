@@ -1,0 +1,143 @@
+$themes: (
+  (
+    "label": "honey",
+    "foreground": #111111,
+    "background": #f0da9b,
+    "edge": #111111,
+    "psuedo": (
+      "hover",
+    ),
+  ),
+  (
+    "label": "rev-honey",
+    "foreground": #f0da9b,
+    "background": #ffffff,
+    "edge": #f0da9b,
+    "psuedo": (
+      "hover",
+    ),
+  ),
+  (
+    "label": "honey-dark",
+    "foreground": #111111,
+    "background": #bba35e,
+    "edge": #111111,
+    "psuedo": (
+      "hover",
+    ),
+  ),
+  (
+    "label": "rev-honey-dark",
+    "foreground": #bba35e,
+    "background": #ffffff,
+    "edge": #bba35e,
+    "psuedo": (
+      "hover",
+    ),
+  ),
+  (
+    "label": "lighter",
+    "foreground": #111111,
+    "background": #dedede,
+    "edge": #111111,
+    "psuedo": (
+      "hover",
+    ),
+  ),
+  (
+    "label": "light",
+    "foreground": #111111,
+    "background": #cdcdcd,
+    "edge": #111111,
+    "psuedo": (
+      "hover",
+    ),
+  ),
+  (
+    "label": "rev-light",
+    "foreground": #dedede,
+    "background": #111111,
+    "edge": #dedede,
+    "psuedo": (
+      "hover",
+    ),
+  ),
+  (
+    "label": "base",
+    "foreground": #111111,
+    "background": #ffffff,
+    "edge": #111111,
+    "psuedo": (),
+  ),
+  (
+    "label": "primary",
+    "foreground": #ffffff,
+    "background": #357edd,
+    "edge": #ffffff,
+    "psuedo": (),
+  ),
+  (
+    "label": "secondary",
+    "foreground": #555555,
+    "background": #96ccff,
+    "edge": #555555,
+    "psuedo": (
+      "hover",
+    ),
+  ),
+  (
+    "label": "link",
+    "foreground": #357edd,
+    "background": #ffffff,
+    "edge": #357edd,
+    "psuedo": (),
+  ),
+  (
+    "label": "visited",
+    "foreground": #a463f2,
+    "background": #ffffff,
+    "edge": #a463f2,
+    "psuedo": (
+      "visited",
+    ),
+  ),
+  (
+    "label": "focus",
+    "foreground": #555555,
+    "background": #ffb700,
+    "edge": #555555,
+    "psuedo": (
+      "focus",
+      "focus-within",
+    ),
+  ),
+  (
+    "label": "required",
+    "foreground": #357edd,
+    "background": #ffffff,
+    "edge": #357edd,
+    "psuedo": (
+      "required",
+    ),
+  ),
+  (
+    "label": "error",
+    "foreground": #ff4136,
+    "background": #ffdfdf,
+    "edge": #ff4136,
+    "psuedo": (
+      "invalid",
+    ),
+  ),
+  (
+    "label": "disabled",
+    "foreground": #777777,
+    "background": #eeeeee,
+    "edge": #777777,
+    "psuedo": (
+      "disabled",
+    ),
+  )
+);
+
+@import "../../node_modules/@nll/css/src/standard.scss";

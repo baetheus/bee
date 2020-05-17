@@ -1,17 +1,24 @@
 {
   "scripts": {
-    "prepare": "snowpack",
-    "start": "snowpack dev",
-    "build": "snowpack build",
-    "test": "jest"
+    "start": "parcel --no-cache ./src/index.html",
+    "build": "parcel build ./src/index.html"
   },
-  "webDependencies": {},
   "devDependencies": {
-    "@snowpack/app-scripts-preact": "^0.5.0",
-    "@testing-library/jest-dom": "^5.5.0",
-    "@testing-library/preact": "^1.0.2",
-    "jest": "^25.4.0",
+    "@babel/plugin-transform-react-jsx": "^7.9.4",
+    "@babel/preset-typescript": "^7.9.0",
+    "babel-plugin-module-resolver": "^4.0.0",
+    "parcel": "^2.0.0-alpha.3.2",
+    "sass": "^1.26.5",
+    "typescript": "^3.9.2"
+  },
+  "dependencies": {
+    "@nll/css": "^9.7.0",
+    "@nll/datum": "^3.1.0",
+    "@nll/dux": "^8.1.4",
+    "fp-ts": "^2.6.1",
+    "io-ts": "^2.2.2",
+    "monocle-ts": "^2.1.0",
     "preact": "^10.4.1",
-    "snowpack": "^2.0.0-0"
+    "preact-router": "^3.2.1"
   }
 }

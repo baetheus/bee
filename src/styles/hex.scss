@@ -1,0 +1,76 @@
+:root {
+  --hex-color: var(--cb-light);
+  --hex-hover: var(--cb-lighter);
+  --hex-multiplier: 1.5;
+  --hex-side: calc(var(--hex-multiplier) * 15px);
+  --hex-base: calc(var(--hex-multiplier) * 26px);
+}
+
+.hex:before {
+  content: " ";
+  width: 0;
+  height: 0;
+  border-bottom-width: var(--hex-side);
+  border-bottom-style: solid;
+  border-bottom-color: var(--hex-color);
+  border-left: var(--hex-base) solid transparent;
+  border-right: var(--hex-base) solid transparent;
+  position: absolute;
+  top: calc(-1 * var(--hex-side));
+}
+
+.hex {
+  margin-top: var(--hex-side);
+  width: calc(2 * var(--hex-base));
+  height: calc(2 * var(--hex-side));
+  background-color: var(--hex-color);
+  position: relative;
+}
+
+.hex:hover {
+  background-color: var(--hex-hover);
+}
+.hex:hover:before {
+  border-bottom-color: var(--hex-hover);
+}
+.hex:hover:after {
+  border-top-color: var(--hex-hover);
+}
+.hex,
+.hex:before,
+.hex:after {
+  cursor: pointer;
+}
+
+.hex:after {
+  content: "";
+  width: 0;
+  position: absolute;
+  bottom: calc(-1 * var(--hex-side));
+  border-top-width: var(--hex-side);
+  border-top-style: solid;
+  border-top-color: var(--hex-color);
+  border-left: var(--hex-base) solid transparent;
+  border-right: var(--hex-base) solid transparent;
+}
+
+.hex > * {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: calc(2 * var(--hex-side));
+}
+
+.hex-shift {
+  margin-left: calc(var(--hex-base) + 2px);
+}
+
+.hex-padding {
+  padding-bottom: var(--hex-side);
+}
