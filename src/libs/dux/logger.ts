@@ -11,7 +11,12 @@ const HasErrorMessage = G.type({
   }),
 });
 
-export const logger = <S>(): MetaReducer<S> => (reducer) => {
+export const logger = <S>(key = "SHOW_LOG"): MetaReducer<S> => (reducer) => {
+  const showLogs = window.localStorage.getItem(key) === "true";
+  if (!showLogs) {
+    return reducer;
+  }
+
   return (state, action) => {
     const _state = reducer(state, action);
 
