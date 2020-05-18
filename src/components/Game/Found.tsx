@@ -6,6 +6,7 @@ import { Game } from "../../stores/game";
 import { If } from "../Control";
 import { Button } from "../Button";
 import { isBefore, parseISO, startOfToday, endOfToday } from "date-fns";
+import { eqInsensitive } from "../../libs/strings";
 
 interface FoundProps {
   game: Game;
@@ -49,8 +50,14 @@ export const Found: FunctionalComponent<FoundProps> = ({ game, className }) => {
         {() => (
           <ul class="fit-grid fs-d1">
             {list.sort().map((word) => (
-              <li class={game.found.includes(word) ? "ct-rev-honey-dark" : ""}>
-                {word}
+              <li
+                class={
+                  game.found.some(eqInsensitive(word))
+                    ? "ct-rev-honey-dark"
+                    : ""
+                }
+              >
+                {word.toUpperCase()}
               </li>
             ))}
           </ul>

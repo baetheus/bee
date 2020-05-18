@@ -25,6 +25,8 @@
   height: calc(2 * var(--hex-side));
   background-color: var(--hex-color);
   position: relative;
+  overflow: visible;
+  z-index: 1;
 
   -webkit-user-select: none; /* Safari */
   -moz-user-select: none; /* Firefox */

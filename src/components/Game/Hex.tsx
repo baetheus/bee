@@ -25,7 +25,7 @@ export const Hex: FunctionalComponent<HexProps> = ({
       style={`--hex-color: ${color}; --hex-hover: ${hover};`}
       onClick={handleClick}
     >
-      <span>{char}</span>
+      <span>{char.toUpperCase()}</span>
     </div>
   );
 };
