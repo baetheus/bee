@@ -10,7 +10,7 @@ import {
   notificationL,
 } from "../stores/game";
 import { ErrorCard } from "../components/ErrorCard";
-import { Game, Found, Notification } from "../components/Game";
+import { Game } from "../components/Game";
 import { Header } from "../components/Header";
 import { DefaultLayout } from "../components/Layouts";
 
@@ -41,11 +41,11 @@ export const GamePage: FunctionalComponent<GamePageProps> = ({
           />
         ),
         (game: GameModel) => (
-          <Fragment>
-            <Notification notification={notification} />
-            <Game game={game} onSubmit={handleSubmit} />
-            <Found game={game} />
-          </Fragment>
+          <Game
+            game={game}
+            notification={notification}
+            onSubmit={handleSubmit}
+          />
         )
       )(game)}
     </DefaultLayout>

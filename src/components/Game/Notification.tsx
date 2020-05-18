@@ -22,7 +22,7 @@ export const Notification: FunctionalComponent<NotificationProps> = ({
   }, [notification]);
 
   return (
-    <div class="vh-2 fld-row ai-ctr jc-ctr">
+    <div class="vh-1 fld-row ai-ctr jc-ctr">
       {fold(
         () => <span></span>,
         (n: string) => <span class="bounceIn">{n}</span>

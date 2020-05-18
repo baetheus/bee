@@ -5,7 +5,7 @@ import { createStore, filterEvery } from "@nll/dux/Store";
 import { actionCreatorFactory } from "@nll/dux/Actions";
 import { useStoreFactory, useDispatchFactory } from "@nll/dux/React";
 import { caseFn } from "@nll/dux/Reducers";
-import { isBefore, parseISO, endOfToday } from "date-fns";
+import { isBefore, parseISO, compareDesc, endOfToday } from "date-fns";
 
 import { GameState, Game } from "./models";
 import { logger, createStateRestore } from "../../libs/dux";
@@ -90,5 +90,6 @@ export const selectAvailableGames = (s: GameState) => {
   const gs = gamesL.get(s);
   return Object.keys(gs)
     .map((key) => gs[key])
-    .filter((game) => isBefore(parseISO(game.date), endOfToday()));
+    .filter((game) => isBefore(parseISO(game.date), endOfToday()))
+    .sort((a, b) => compareDesc(parseISO(a.date), parseISO(b.date)));
 };

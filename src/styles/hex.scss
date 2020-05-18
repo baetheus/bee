@@ -1,9 +1,9 @@
 :root {
   --hex-color: var(--cb-light);
   --hex-hover: var(--cb-lighter);
-  --hex-multiplier: 1.5;
-  --hex-side: calc(var(--hex-multiplier) * 15px);
-  --hex-base: calc(var(--hex-multiplier) * 26px);
+  --hex-multiplier: 1;
+  --hex-side: calc(var(--hex-multiplier) * 20px);
+  --hex-base: calc(var(--hex-multiplier) * 36px);
 }
 
 .hex:before {

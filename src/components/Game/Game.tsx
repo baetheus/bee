@@ -1,16 +1,20 @@
 import { h, FunctionalComponent } from "preact";
 import { useState, useCallback } from "preact/hooks";
+import { Option } from "fp-ts/es6/Option";
 import { MdRefresh } from "react-icons/md";
 
 import { Game as GameModel } from "../../stores/game";
+import { shuffle } from "../../libs/arrays";
 
 import { Button } from "../Button";
 
 import { Honeycomb } from "./Honeycomb";
-import { shuffle } from "../../libs/arrays";
+import { Notification } from "./Notification";
+import { Found } from "./Found";
 
 interface GameProps {
   game: GameModel;
+  notification: Option<string>;
   onSubmit?: (word: string) => void;
 }
 
@@ -25,6 +29,7 @@ const MAX_WORD_SIZE = 300;
 
 export const Game: FunctionalComponent<GameProps> = ({
   game,
+  notification,
   onSubmit = () => {},
 }) => {
   const [word, setWord] = useState("");
@@ -46,38 +51,46 @@ export const Game: FunctionalComponent<GameProps> = ({
       <div class="vh-2 vw-p100 fs-u5 ta-c ovx-au fld-row ai-ctr jc-ctr ct-lighter">
         {word.split("").map(highlight(game.middle))}
       </div>
+
+      <Notification notification={notification} />
+
       <Honeycomb
         chars={chars}
         middle={game.middle}
         onClickLetter={handleLetterClick}
       />
-      <div class="vw-px300 fld-row flg-4 fs-u3">
-        <Button
-          className="vw-p50 jc-ctr"
-          theme="ct-honey ct-disabled-on-disabled"
-          hover="ct-honey-dark-on-hover"
-          disabled={word.length === 0}
-          onClick={handleClear}
-        >
-          Clear
-        </Button>
-        <Button
-          theme="ct-honey ct-disabled-on-disabled"
-          hover="ct-honey-dark-on-hover"
-          onClick={handleShuffle}
-        >
-          <MdRefresh />
-        </Button>
-        <Button
-          className="vw-p50 jc-ctr"
-          theme="ct-honey ct-disabled-on-disabled"
-          hover="ct-honey-dark-on-hover"
-          disabled={word.length <= 3 || !word.includes(game.middle)}
-          onClick={handleSubmit}
-        >
-          Enter
-        </Button>
-      </div>
+
+      <section class="fld-col flg-4">
+        <div class="vw-px300 fld-row flg-4 fs-u3">
+          <Button
+            className="vw-p50 jc-ctr"
+            theme="ct-honey ct-disabled-on-disabled"
+            hover="ct-honey-dark-on-hover"
+            disabled={word.length === 0}
+            onClick={handleClear}
+          >
+            Clear
+          </Button>
+          <Button
+            theme="ct-honey ct-disabled-on-disabled"
+            hover="ct-honey-dark-on-hover"
+            onClick={handleShuffle}
+          >
+            <MdRefresh />
+          </Button>
+          <Button
+            className="vw-p50 jc-ctr"
+            theme="ct-honey ct-disabled-on-disabled"
+            hover="ct-honey-dark-on-hover"
+            disabled={word.length <= 3 || !word.includes(game.middle)}
+            onClick={handleSubmit}
+          >
+            Enter
+          </Button>
+        </div>
+
+        <Found game={game} className="vwmx-px300 vw-p100" />
+      </section>
     </div>
   );
 };

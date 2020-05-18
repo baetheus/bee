@@ -14,7 +14,7 @@ export const Button: FunctionalComponent<ButtonProps> = ({
 }) => (
   <button
     {...props}
-    class={`${theme} ${hover} bwa-0 bra-1 pwa-4 fld-row flg-3 ai-ctr ${className} ${props.class}`}
+    class={`${theme} ${hover} bwa-0 bra-1 pwa-4 fld-row flg-3 ai-ctr crsr-pointer ${className} ${props.class}`}
   >
     {children}
   </button>
