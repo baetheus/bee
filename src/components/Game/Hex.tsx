@@ -21,7 +21,7 @@ export const Hex: FunctionalComponent<HexProps> = ({
 
   return (
     <div
-      class="hex"
+      class="hex ff-head"
       style={`--hex-color: ${color}; --hex-hover: ${hover};`}
       onClick={handleClick}
     >

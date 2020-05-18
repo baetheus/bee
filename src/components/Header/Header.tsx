@@ -5,7 +5,7 @@ import { FaGithub } from "react-icons/fa";
 
 export const Header = () => {
   return (
-    <h1 class="fld-row flg-4 jc-spb ai-ctr ff-abril">
+    <h1 class="fld-row flg-4 jc-spb ai-ctr ff-head">
       <Link href="/" aria-label="Game list" class="fld-row flg-4">
         <span class="ct-rev-honey">
           <GiTreeBeehive />
