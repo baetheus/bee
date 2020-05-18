@@ -72,8 +72,9 @@ export const Game: FunctionalComponent<GameProps> = ({
             Clear
           </Button>
           <Button
-            theme="ct-honey ct-disabled-on-disabled"
-            hover="ct-honey-dark-on-hover"
+            theme="ct-base ct-disabled-on-disabled"
+            hover="ct-light-on-hover"
+            class="pwx-4"
             onClick={handleShuffle}
           >
             <MdRefresh />
