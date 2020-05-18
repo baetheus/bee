@@ -6,12 +6,16 @@ import { actionCreatorFactory } from "@nll/dux/Actions";
 import { useStoreFactory, useDispatchFactory } from "@nll/dux/React";
 import { caseFn } from "@nll/dux/Reducers";
 import { isBefore, parseISO, compareDesc, endOfToday } from "date-fns";
+import { ajax } from "rxjs/ajax";
 
 import { GameState, Game } from "./models";
 import { logger, createStateRestore } from "../../libs/dux";
 import { eqInsensitive } from "../../libs/strings";
 import { INITIAL_GAME_STATE } from "./consts";
-import { GameStateCodec } from "./validators";
+import { GameStateCodec, GameCodec, GamesCodec } from "./validators";
+import { notNil } from "../../libs/typeguards";
+import { asyncExhaustMap, asyncMergeMap } from "@nll/dux/Operators";
+import { mapDecode } from "../../libs/ajax";
 
 /** Setup Store */
 const action = actionCreatorFactory("GAME_STORE");
@@ -76,6 +80,28 @@ const foundWordRunEvery = filterEvery(foundWord, (_, { value: { guess } }) =>
   setNotification(some(`You found '${guess}'`))
 );
 gameStore.addReducers(foundWordCase).addRunEverys(foundWordRunEvery);
+
+/** Get New Games */
+const getNewGames = action.async<string, Game[]>("GET_NEW_GAMES");
+const getNewGamesSuccessCase = caseFn(
+  getNewGames.success,
+  (s: GameState, { value: { result } }) => {
+    const newGames = result
+      .filter((game) => !notNil(s.games[game.id]))
+      .reduce((acc, cur) => {
+        acc[cur.id] = cur;
+        return acc;
+      }, {} as Record<string, Game>);
+    return gamesL.modify((games) => ({ ...games, ...newGames }))(s);
+  }
+);
+const getNewGamesRunOnce = asyncMergeMap(getNewGames, (url) =>
+  ajax.getJSON(url).pipe(mapDecode(GamesCodec))
+);
+gameStore
+  .addReducers(getNewGamesSuccessCase)
+  .addRunOnces(getNewGamesRunOnce)
+  .dispatch(getNewGames.pending("new_games.json"));
 
 /** Storage */
 const storage = createStateRestore<GameStateCodec, GameState>(
