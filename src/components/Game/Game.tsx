@@ -48,7 +48,7 @@ export const Game: FunctionalComponent<GameProps> = ({
 
   return (
     <div class="fld-col flg-6 ai-ctr">
-      <div class="vh-2 vw-p100 fs-u5 ta-c ovx-au fld-row ai-ctr jc-ctr ct-lighter">
+      <div class="vh-2 vw-p100 fs-u5 ta-c ovx-au fld-row ai-ctr jc-ctr ct-lighter ff-abril">
         {word.toUpperCase().split("").map(highlight(game.middle))}
       </div>
 

@@ -57,7 +57,7 @@ export const Found: FunctionalComponent<FoundProps> = ({ game, className }) => {
                     : ""
                 }
               >
-                {word.toUpperCase()}
+                {word}
               </li>
             ))}
           </ul>

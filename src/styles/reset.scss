@@ -15,6 +15,10 @@ html {
   min-width: 320px;
 }
 
+.ff-abril {
+  font-family: "Abril Fatface", cursive;
+}
+
 body {
   display: flex;
   flex-direction: column;
@@ -111,6 +115,6 @@ textarea:focus {
 
 .fit-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(20%, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
   grid-gap: var(--margin-width-4);
 }

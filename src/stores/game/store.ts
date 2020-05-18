@@ -58,15 +58,11 @@ const submitWordRunEvery = filterEvery(
     }
 
     if (!game.value.dictionary.some(eqInsensitive(guess))) {
-      return setNotification(
-        some(`'${guess.toUpperCase()}' is not in the word list`)
-      );
+      return setNotification(some(`'${guess}' is not in the word list`));
     }
 
-    if (game.value.found.some(eqInsensitive(guess.toUpperCase()))) {
-      return setNotification(
-        some(`You have already found '${guess.toUpperCase()}'`)
-      );
+    if (game.value.found.some(eqInsensitive(guess))) {
+      return setNotification(some(`You have already found '${guess}'`));
     }
 
     return foundWord({ id, guess });
@@ -81,7 +77,7 @@ const foundWordCase = caseFn(
     foundG(id).modify((found) => [guess, ...found])(s)
 );
 const foundWordRunEvery = filterEvery(foundWord, (_, { value: { guess } }) =>
-  setNotification(some(`You found '${guess.toUpperCase()}'`))
+  setNotification(some(`You found '${guess}'`))
 );
 gameStore.addReducers(foundWordCase).addRunEverys(foundWordRunEvery);
 
