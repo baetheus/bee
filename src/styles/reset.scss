@@ -1,7 +1,6 @@
 /** Reset */
 html,
 body {
-  min-height: 100vh;
   margin: 0;
   padding: 0;
 }
@@ -12,7 +11,6 @@ html {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  min-width: 320px;
 }
 
 .ff-head {
@@ -22,6 +20,7 @@ html {
 body {
   display: flex;
   flex-direction: column;
+  min-width: 320px;
 }
 
 body > main {
