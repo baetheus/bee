@@ -110,7 +110,7 @@ export const Game: FunctionalComponent<GameProps> = ({
         </div>
       </div>
 
-      <Found game={game} className="vwmx-px300 vw-p100" />
+      <Found game={game} className="vw-p100" />
     </div>
   );
 };

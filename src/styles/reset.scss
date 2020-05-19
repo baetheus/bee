@@ -135,6 +135,6 @@ textarea:focus {
 
 .fit-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
-  grid-gap: var(--margin-width-4);
+  grid-template-columns: repeat(auto-fill, minmax(13ch, 1fr));
+  grid-gap: var(--margin-width-2);
 }

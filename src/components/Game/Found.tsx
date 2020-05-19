@@ -48,7 +48,7 @@ export const Found: FunctionalComponent<FoundProps> = ({ game, className }) => {
       </div>
       <If predicate={show}>
         {() => (
-          <ul class="fit-grid fs-d1">
+          <ul class="fit-grid fs-d2">
             {list.sort().map((word) => (
               <li
                 class={
