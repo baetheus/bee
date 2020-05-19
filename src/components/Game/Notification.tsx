@@ -1,34 +1,44 @@
 import { h, FunctionalComponent } from "preact";
 import { useEffect } from "preact/hooks";
-import { Option, fold, isSome, none } from "fp-ts/es6/Option";
+import { Option, fold, isSome } from "fp-ts/es6/Option";
 
-import { gameStore, setNotification } from "../../stores/game";
+import { gameStore, clearNotification, Notice } from "../../stores/game";
+import { Highlight } from "./Highlight";
 
 interface NotificationProps {
-  notification: Option<string>;
+  word: string;
+  middle: string;
+  notification: Option<Notice>;
   className?: string;
 }
 
 export const Notification: FunctionalComponent<NotificationProps> = ({
+  word,
   notification,
+  middle,
   className = "",
 }) => {
+  if (word.length > 0 && isSome(notification)) {
+    gameStore.dispatch(clearNotification);
+  }
+
   useEffect(() => {
     if (isSome(notification)) {
       const timer = setTimeout(
-        () => gameStore.dispatch(setNotification(none)),
-        4 * 1000
+        () => gameStore.dispatch(clearNotification),
+        900
       );
       return () => clearTimeout(timer);
     }
   }, [notification]);
 
-  return (
-    <div class={`vh-1 fld-row ai-ctr jc-ctr ${className}`}>
-      {fold(
-        () => <span></span>,
-        (n: string) => <span class="bounceIn">{n}</span>
-      )(notification)}
-    </div>
-  );
+  return fold(
+    () => null,
+    (n: Notice) =>
+      n.type === "good" ? (
+        <Highlight className="backOutDown" word={n.message} middle={middle} />
+      ) : (
+        <Highlight className="zoomOutRight" word={n.message} middle={middle} />
+      )
+  )(notification);
 };

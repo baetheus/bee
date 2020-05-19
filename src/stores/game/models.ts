@@ -9,7 +9,12 @@ export type Game = {
   date: string;
 };
 
+export type Notice = {
+  type: "good" | "bad";
+  message: string;
+};
+
 export interface GameState {
-  notification: Option<string>;
+  notification: Option<Notice>;
   games: Record<string, Game>;
 }

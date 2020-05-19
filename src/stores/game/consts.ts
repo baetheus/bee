@@ -1,7 +1,16 @@
 import { none } from "fp-ts/es6/Option";
 import { endOfTomorrow } from "date-fns";
 
-import { GameState } from "./models";
+import { GameState, Notice } from "./models";
+
+export const goodNotice = (message: string): Notice => ({
+  type: "good",
+  message,
+});
+export const badNotice = (message: string): Notice => ({
+  type: "bad",
+  message,
+});
 
 export const INITIAL_GAME_STATE: GameState = {
   notification: none,

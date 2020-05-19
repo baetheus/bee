@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "preact/hooks";
 import { Lens, Optional } from "monocle-ts";
-import { Option, isNone, some } from "fp-ts/es6/Option";
+import { isNone, some, none } from "fp-ts/es6/Option";
 import { createStore, filterEvery } from "@nll/dux/Store";
 import { actionCreatorFactory } from "@nll/dux/Actions";
 import { useStoreFactory, useDispatchFactory } from "@nll/dux/React";
@@ -9,13 +9,13 @@ import { isBefore, parseISO, compareDesc, endOfToday } from "date-fns";
 import { from } from "rxjs";
 import { ajax } from "rxjs/ajax";
 
-import { GameState, Game } from "./models";
+import { GameState, Game, Notice } from "./models";
 import { logger, createStateRestore } from "../../libs/dux";
 import { eqInsensitive } from "../../libs/strings";
-import { INITIAL_GAME_STATE } from "./consts";
-import { GameStateCodec, GameCodec, GamesCodec } from "./validators";
+import { INITIAL_GAME_STATE, badNotice, goodNotice } from "./consts";
+import { GameStateCodec, GamesCodec } from "./validators";
 import { notNil } from "../../libs/typeguards";
-import { asyncExhaustMap, asyncMergeMap } from "@nll/dux/Operators";
+import { asyncMergeMap } from "@nll/dux/Operators";
 import { mapDecode } from "../../libs/ajax";
 
 /** Setup Store */
@@ -38,13 +38,17 @@ const foundL = Lens.fromProp<Game>()("found");
 export const foundG = (id: string) => gameG(id).composeLens(foundL);
 
 /** Notifications*/
-export const setNotification = action.simple<Option<string>>(
-  "SET_NOTIFICATION"
-);
+export const setNotification = action.simple<Notice>("SET_NOTIFICATION");
+const clearNotificationRaw = action.simple("CLEAR_NOTIFICATION");
+export const clearNotification = clearNotificationRaw(undefined);
 const setNotificationCase = caseFn(setNotification, (s: GameState, { value }) =>
-  notificationL.set(value)(s)
+  notificationL.set(some(value))(s)
 );
-gameStore.addReducers(setNotificationCase);
+const clearNotificationCase = caseFn(
+  clearNotificationRaw,
+  notificationL.set(none)
+);
+gameStore.addReducers(setNotificationCase, clearNotificationCase);
 
 /** Submit Word */
 export const submitWord = action.simple<{ id: string; guess: string }>(
@@ -55,22 +59,22 @@ const submitWordRunEvery = filterEvery(
   (s: GameState, { value: { id, guess } }) => {
     const game = gameG(id).getOption(s);
     if (isNone(game)) {
-      return setNotification(some("Error finding game"));
+      return setNotification(badNotice("No game!"));
     }
 
     if (!game.value.dictionary.some(eqInsensitive(guess))) {
       return from([
-        setNotification(some(`'${guess}' is not in the word list`)),
+        setNotification(badNotice(`${guess}`.toUpperCase())),
         failureBuzz,
       ]);
     }
 
     if (game.value.found.some(eqInsensitive(guess))) {
-      return from([setNotification(some(`You have already found '${guess}'`))]);
+      return from([setNotification(badNotice("Already Found"))]);
     }
 
     return from([
-      setNotification(some(`You found '${guess}'`)),
+      setNotification(goodNotice(`${guess}`.toUpperCase())),
       foundWord({ id, guess }),
       successBuzz,
     ]);

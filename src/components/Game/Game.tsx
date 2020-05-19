@@ -3,7 +3,7 @@ import { useState, useCallback } from "preact/hooks";
 import { Option } from "fp-ts/es6/Option";
 import { MdRefresh, MdBackspace, MdClear, MdCheck } from "react-icons/md";
 
-import { Game as GameModel } from "../../stores/game";
+import { Game as GameModel, Notice } from "../../stores/game";
 import { shuffle } from "../../libs/arrays";
 
 import { Button } from "../Button";
@@ -11,19 +11,13 @@ import { Button } from "../Button";
 import { Honeycomb } from "./Honeycomb";
 import { Notification } from "./Notification";
 import { Found } from "./Found";
+import { Highlight } from "./Highlight";
 
 interface GameProps {
   game: GameModel;
-  notification: Option<string>;
+  notification: Option<Notice>;
   onSubmit?: (word: string) => void;
 }
-
-const highlight = (middle: string) => (char: string) => {
-  if (middle.toLowerCase() === char.toLowerCase()) {
-    return <span class="cf-rev-honey-dark bounceIn">{char}</span>;
-  }
-  return <span class="bounceIn">{char}</span>;
-};
 
 const MAX_WORD_SIZE = 17;
 
@@ -52,9 +46,14 @@ export const Game: FunctionalComponent<GameProps> = ({
   return (
     <div class="fld-col flg-4 ai-ctr vwc-p100">
       <div class="vh-2 fs-u5 ta-c fld-row ai-ctr jc-ctr ct-lighter ff-head ps-rel">
-        {word.toUpperCase().split("").map(highlight(game.middle))}
+        <Highlight word={word} middle={game.middle} />
 
-        <Notification notification={notification} className="ps-abs" />
+        <Notification
+          notification={notification}
+          middle={game.middle}
+          word={word}
+          className="ps-abs"
+        />
       </div>
 
       <div class="fld-col ai-ctr vwc-p100">
