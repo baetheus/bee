@@ -76,9 +76,12 @@ const foundWordCase = caseFn(
   (s: GameState, { value: { id, guess } }) =>
     foundG(id).modify((found) => [guess, ...found])(s)
 );
-const foundWordRunEvery = filterEvery(foundWord, (_, { value: { guess } }) =>
-  setNotification(some(`You found '${guess}'`))
-);
+const foundWordRunEvery = filterEvery(foundWord, (_, { value: { guess } }) => {
+  if (notNil(navigator.vibrate)) {
+    navigator.vibrate([250, 100, 250]);
+  }
+  return setNotification(some(`You found '${guess}'`));
+});
 gameStore.addReducers(foundWordCase).addRunEverys(foundWordRunEvery);
 
 /** Get New Games */
