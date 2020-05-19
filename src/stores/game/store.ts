@@ -98,6 +98,7 @@ const buzzRunEvery = filterEvery(buzz, (_, { value }) => {
     navigator.vibrate(value);
   }
 });
+gameStore.addRunEverys(buzzRunEvery);
 
 /** Get New Games */
 const getNewGames = action.async<string, Game[]>("GET_NEW_GAMES");
