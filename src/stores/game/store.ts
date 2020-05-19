@@ -6,6 +6,7 @@ import { actionCreatorFactory } from "@nll/dux/Actions";
 import { useStoreFactory, useDispatchFactory } from "@nll/dux/React";
 import { caseFn } from "@nll/dux/Reducers";
 import { isBefore, parseISO, compareDesc, endOfToday } from "date-fns";
+import { from } from "rxjs";
 import { ajax } from "rxjs/ajax";
 
 import { GameState, Game } from "./models";
@@ -58,14 +59,24 @@ const submitWordRunEvery = filterEvery(
     }
 
     if (!game.value.dictionary.some(eqInsensitive(guess))) {
-      return setNotification(some(`'${guess}' is not in the word list`));
+      return from([
+        setNotification(some(`'${guess}' is not in the word list`)),
+        failureBuzz,
+      ]);
     }
 
     if (game.value.found.some(eqInsensitive(guess))) {
-      return setNotification(some(`You have already found '${guess}'`));
+      return from([
+        setNotification(some(`You have already found '${guess}'`)),
+        failureBuzz,
+      ]);
     }
 
-    return foundWord({ id, guess });
+    return from([
+      setNotification(some(`You found '${guess}'`)),
+      foundWord({ id, guess }),
+      successBuzz,
+    ]);
   }
 );
 gameStore.addRunEverys(submitWordRunEvery);
@@ -76,13 +87,17 @@ const foundWordCase = caseFn(
   (s: GameState, { value: { id, guess } }) =>
     foundG(id).modify((found) => [guess, ...found])(s)
 );
-const foundWordRunEvery = filterEvery(foundWord, (_, { value: { guess } }) => {
+gameStore.addReducers(foundWordCase);
+
+/** Buzz */
+const buzz = action.simple<number[]>("BUZZ");
+const failureBuzz = buzz([50, 50, 50]);
+const successBuzz = buzz([100, 50, 100, 50, 350]);
+const buzzRunEvery = filterEvery(buzz, (_, { value }) => {
   if (notNil(navigator.vibrate)) {
-    navigator.vibrate([250, 100, 250]);
+    navigator.vibrate(value);
   }
-  return setNotification(some(`You found '${guess}'`));
 });
-gameStore.addReducers(foundWordCase).addRunEverys(foundWordRunEvery);
 
 /** Get New Games */
 const getNewGames = action.async<string, Game[]>("GET_NEW_GAMES");
