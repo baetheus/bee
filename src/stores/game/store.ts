@@ -66,10 +66,7 @@ const submitWordRunEvery = filterEvery(
     }
 
     if (game.value.found.some(eqInsensitive(guess))) {
-      return from([
-        setNotification(some(`You have already found '${guess}'`)),
-        failureBuzz,
-      ]);
+      return from([setNotification(some(`You have already found '${guess}'`))]);
     }
 
     return from([
@@ -91,8 +88,8 @@ gameStore.addReducers(foundWordCase);
 
 /** Buzz */
 const buzz = action.simple<number[]>("BUZZ");
-const failureBuzz = buzz([50, 50, 50]);
-const successBuzz = buzz([100, 50, 100, 50, 350]);
+const failureBuzz = buzz([50]);
+const successBuzz = buzz([125, 250, 75, 50, 75, 50, 300]);
 const buzzRunEvery = filterEvery(buzz, (_, { value }) => {
   if (notNil(navigator.vibrate)) {
     navigator.vibrate(value);
