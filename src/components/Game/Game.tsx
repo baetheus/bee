@@ -1,7 +1,7 @@
 import { h, FunctionalComponent } from "preact";
 import { useState, useCallback } from "preact/hooks";
 import { Option } from "fp-ts/es6/Option";
-import { MdRefresh } from "react-icons/md";
+import { MdRefresh, MdBackspace, MdClear, MdCheck } from "react-icons/md";
 
 import { Game as GameModel } from "../../stores/game";
 import { shuffle } from "../../libs/arrays";
@@ -37,6 +37,9 @@ export const Game: FunctionalComponent<GameProps> = ({
   const handleShuffle = useCallback(() => setChars(shuffle), [setChars]);
 
   const handleClear = useCallback(() => setWord(""), [setWord]);
+  const handleDelete = useCallback(() => setWord((w) => w.slice(0, -1)), [
+    setWord,
+  ]);
   const handleLetterClick = useCallback(
     (char: string) => setWord((w) => (w.length < MAX_WORD_SIZE ? w + char : w)),
     [setWord]
@@ -47,55 +50,68 @@ export const Game: FunctionalComponent<GameProps> = ({
   }, [word, setWord, onSubmit]);
 
   return (
-    <div class="fld-col flg-6 ai-ctr">
-      <div class="fld-col flg-2 ai-stc vw-p100">
-        <div class="vh-2 vw-p100 fs-u5 ta-c fld-row ai-ctr jc-ctr ct-lighter ff-head">
-          {word.toUpperCase().split("").map(highlight(game.middle))}
-        </div>
+    <div class="fld-col flg-4 ai-ctr vwc-p100">
+      <div class="vh-2 fs-u5 ta-c fld-row ai-ctr jc-ctr ct-lighter ff-head ps-rel">
+        {word.toUpperCase().split("").map(highlight(game.middle))}
 
-        <Notification notification={notification} />
+        <Notification notification={notification} className="ps-abs" />
       </div>
 
-      <Honeycomb
-        chars={chars}
-        middle={game.middle}
-        onClickLetter={handleLetterClick}
-        middleColor="#f0da9b"
-        charColor="#dedede"
-      />
-
-      <section class="fld-col flg-4">
-        <div class="vw-px300 fld-row flg-4 fs-u3">
+      <div class="fld-col ai-ctr vwc-p100">
+        <div class="fld-row flg-4 jc-spb">
           <Button
-            className="vw-p50 jc-ctr"
+            className="pwx-4 fs-u4"
             theme="ct-honey ct-disabled-on-disabled"
             hover="ct-honey-dark-on-hover"
             disabled={word.length === 0}
             onClick={handleClear}
           >
-            Clear
+            <MdClear />
           </Button>
+
           <Button
-            theme="ct-base ct-disabled-on-disabled"
-            hover="ct-light-on-hover"
-            class="pwx-4"
+            className="pwx-4 fs-u4"
+            theme="ct-honey ct-disabled-on-disabled"
+            hover="ct-honey-dark-on-hover"
+            disabled={word.length === 0}
+            onClick={handleDelete}
+          >
+            <MdBackspace />
+          </Button>
+        </div>
+
+        <Honeycomb
+          chars={chars}
+          middle={game.middle}
+          onClickLetter={handleLetterClick}
+          className="mwyr-6"
+          middleColor="#f0da9b"
+          charColor="#dedede"
+        />
+
+        <div class="fld-row flg-4 jc-spb">
+          <Button
+            theme="ct-honey ct-disabled-on-disabled"
+            hover="ct-honey-dark-on-hover"
+            class="pwx-4 fs-u4"
             onClick={handleShuffle}
           >
             <MdRefresh />
           </Button>
+
           <Button
-            className="vw-p50 jc-ctr"
+            className="pwx-4 fs-u4"
             theme="ct-honey ct-disabled-on-disabled"
             hover="ct-honey-dark-on-hover"
             disabled={word.length <= 3 || !word.includes(game.middle)}
             onClick={handleSubmit}
           >
-            Enter
+            <MdCheck />
           </Button>
         </div>
+      </div>
 
-        <Found game={game} className="vwmx-px300 vw-p100" />
-      </section>
+      <Found game={game} className="vwmx-px300 vw-p100" />
     </div>
   );
 };

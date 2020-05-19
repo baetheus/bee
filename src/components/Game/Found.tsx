@@ -1,11 +1,11 @@
-import { h, FunctionalComponent, Fragment } from "preact";
+import { h, FunctionalComponent } from "preact";
 import { useState, useCallback } from "preact/hooks";
 
 import { Game } from "../../stores/game";
 
 import { If } from "../Control";
 import { Button } from "../Button";
-import { isBefore, parseISO, startOfToday, endOfToday } from "date-fns";
+import { isBefore, parseISO, startOfToday } from "date-fns";
 import { eqInsensitive } from "../../libs/strings";
 
 interface FoundProps {
@@ -68,9 +68,10 @@ export const Found: FunctionalComponent<FoundProps> = ({ game, className }) => {
           <Button
             theme="ct-honey ct-disabled-on-disabled"
             hover="ct-honey-dark-on-hover"
+            class="fld-row ai-ctr jc-ctr"
             onClick={handleShowAll}
           >
-            {showAll ? "Hide All" : "Show All"}
+            {showAll ? "Hide Spoilers" : "Show Spoilers"}
           </Button>
         )}
       </If>

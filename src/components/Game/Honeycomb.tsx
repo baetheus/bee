@@ -1,5 +1,5 @@
 import { h, FunctionalComponent } from "preact";
-import { useMemo, useCallback, useState, useEffect } from "preact/hooks";
+import { useMemo, useCallback } from "preact/hooks";
 
 import { range, zip } from "../../libs/arrays";
 import { useCanvas2d } from "../../libs/preact";
@@ -9,6 +9,7 @@ interface HoneycombProps {
   chars: string[];
   middle: string;
   onClickLetter: (char: string) => void;
+  className?: string;
   middleColor?: string;
   charColor?: string;
   width?: number;
@@ -56,7 +57,7 @@ const makeHex = (center: Point, radius: number): Path2D => {
 };
 
 const makeHexes = (
-  ps: Omit<Required<HoneycombProps>, "onClickLetter">
+  ps: Omit<Required<HoneycombProps>, "onClickLetter" | "className">
 ): Hex[] => {
   const center: Point = [ps.width / 2, ps.height / 2];
   const ringRadius = 2 * ((2 * ps.radius) / Math.sqrt(5)) + ps.gap;
@@ -81,6 +82,7 @@ export const Honeycomb: FunctionalComponent<HoneycombProps> = ({
   middle,
   chars,
   onClickLetter,
+  className = "",
   middleColor = "",
   charColor = "",
   width = 300,
@@ -117,7 +119,7 @@ export const Honeycomb: FunctionalComponent<HoneycombProps> = ({
         ctx.fillText(
           hex.character.toUpperCase(),
           hex.center[0],
-          hex.center[1] + 4
+          hex.center[1] + 4 // Fudge down a little to align center
         );
       });
     },
@@ -143,9 +145,5 @@ export const Honeycomb: FunctionalComponent<HoneycombProps> = ({
     [onClickLetter, ctx, hexes]
   );
 
-  return (
-    <div class="fld-col ai-ctr jc-ctr">
-      <canvas ref={ref} onClick={handleClick} />
-    </div>
-  );
+  return <canvas class={className} ref={ref} onClick={handleClick} />;
 };

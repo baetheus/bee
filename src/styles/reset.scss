@@ -74,9 +74,25 @@ a {
   max-width: 500px;
 }
 
+.vwcmx-px300 > * {
+  max-width: 300px;
+}
+
 .sq-px300 {
   width: 300px;
   height: 300px;
+}
+
+.ps-abs {
+  position: absolute;
+}
+
+.ps-rel {
+  position: relative;
+}
+
+.z-1 {
+  z-index: 1;
 }
 
 @media (max-height: 750px) {
