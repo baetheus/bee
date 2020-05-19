@@ -28,3 +28,16 @@ export const chunk = <T>(ts: ReadonlyArray<T>, chunkSize: number): T[][] => {
   }
   return result;
 };
+
+export const range = (count: number, start: number = 0, step: number = 1) => {
+  const _count = Math.floor(Math.abs(count));
+  return Array.from({ length: _count }, (_, i) => start + i * step);
+};
+
+export const zip = <A, B>(as: A[], bs: B[]): (A & B)[] => {
+  let result: (A & B)[] = [];
+  for (let i = 0; i < Math.max(as.length, bs.length); i++) {
+    result.push(Object.assign({}, as[i], bs[i]));
+  }
+  return result;
+};

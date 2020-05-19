@@ -25,7 +25,7 @@ const highlight = (middle: string) => (char: string) => {
   return <span class="bounceIn">{char}</span>;
 };
 
-const MAX_WORD_SIZE = 300;
+const MAX_WORD_SIZE = 17;
 
 export const Game: FunctionalComponent<GameProps> = ({
   game,
@@ -52,12 +52,12 @@ export const Game: FunctionalComponent<GameProps> = ({
         {word.toUpperCase().split("").map(highlight(game.middle))}
       </div>
 
-      <Notification notification={notification} />
-
       <Honeycomb
         chars={chars}
         middle={game.middle}
         onClickLetter={handleLetterClick}
+        middleColor="#f0da9b"
+        charColor="#dedede"
       />
 
       <section class="fld-col flg-4">

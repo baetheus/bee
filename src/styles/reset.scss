@@ -14,7 +14,7 @@ html {
 }
 
 .ff-head {
-  font-family: "Markazi Text", serif;
+  font-family: "Markazi Text";
 }
 
 body {
@@ -72,6 +72,11 @@ a {
 
 .vwcmx-px500 > * {
   max-width: 500px;
+}
+
+.sq-px300 {
+  width: 300px;
+  height: 300px;
 }
 
 @media (max-height: 750px) {
