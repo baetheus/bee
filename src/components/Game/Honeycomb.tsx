@@ -104,6 +104,7 @@ export const Honeycomb: FunctionalComponent<HoneycombProps> = ({
   );
 
   const ref = useCanvas2d(
+    { width, height },
     (ctx) => {
       ctx.clearRect(0, 0, width, height);
       hexes.forEach((hex) => {
@@ -118,29 +119,33 @@ export const Honeycomb: FunctionalComponent<HoneycombProps> = ({
           hex.center[0],
           hex.center[1] + 4
         );
-        console.log("useCanvas2d", { ctx, hex });
       });
     },
     [hexes]
   );
   const ctx = notNil(ref.current) ? ref.current.getContext("2d") : null;
+  // Needed to scale clicks
+  const dpi = window.devicePixelRatio || 1;
 
   const handleClick = useCallback(
     (event: MouseEvent) => {
       if (notNil(ctx)) {
         hexes.forEach(({ path, character }) => {
-          if (ctx.isPointInPath(path, event.offsetX, event.offsetY)) {
+          if (
+            // Scale clicks for high dpi
+            ctx.isPointInPath(path, event.offsetX * dpi, event.offsetY * dpi)
+          ) {
             onClickLetter(character);
           }
         });
       }
     },
-    [onClickLetter, ctx]
+    [onClickLetter, ctx, hexes]
   );
 
   return (
     <div class="fld-col ai-ctr jc-ctr">
-      <canvas ref={ref} width={width} height={height} onClick={handleClick} />
+      <canvas ref={ref} onClick={handleClick} />
     </div>
   );
 };

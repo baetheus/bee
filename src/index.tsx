@@ -12,6 +12,8 @@ new FontFace("Markazi Text", "url(/MarkaziText.ttf)")
   })
   .then((fontSet) => {
     console.log("Got fontSet", fontSet);
-    render(<App />, document.body);
   })
-  .catch((error) => console.error("Failed to load font.", error));
+  .catch((error) => console.error("Failed to load font.", error))
+  .then(() => {
+    render(<App />, document.body);
+  });
