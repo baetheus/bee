@@ -71,16 +71,18 @@ $themes: (
   ),
   (
     "label": "primary",
-    "foreground": #ffffff,
-    "background": #357edd,
-    "edge": #ffffff,
-    "psuedo": (),
+    "foreground": #111111,
+    "background": #f0da9b,
+    "edge": #111111,
+    "psuedo": (
+      "hover",
+    ),
   ),
   (
     "label": "secondary",
-    "foreground": #555555,
-    "background": #96ccff,
-    "edge": #555555,
+    "foreground": #111111,
+    "background": #bba35e,
+    "edge": #111111,
     "psuedo": (
       "hover",
     ),

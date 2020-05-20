@@ -17,4 +17,7 @@ export type Notice = {
 export interface GameState {
   notification: Option<Notice>;
   games: Record<string, Game>;
+  settings: {
+    vibration: boolean;
+  };
 }

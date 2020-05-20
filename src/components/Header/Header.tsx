@@ -2,6 +2,7 @@ import { h } from "preact";
 import { Link } from "preact-router/match";
 import { GiTreeBeehive } from "react-icons/gi";
 import { FaGithub } from "react-icons/fa";
+import { MdSettings } from "react-icons/md";
 
 export const Header = () => {
   return (
@@ -13,12 +14,21 @@ export const Header = () => {
         <span>bee</span>
       </Link>
 
-      <a
-        class="fs-d2 ct-rev-honey-dark ct-rev-honey-on-hover"
-        href="https://github.com/baetheus/bee"
-      >
-        <FaGithub />
-      </a>
+      <section class="fld-row flg-4 ai-ctr jc-ctr">
+        <a
+          class="fs-d2 ct-rev-honey-dark ct-rev-honey-on-hover"
+          href="https://github.com/baetheus/bee"
+        >
+          <FaGithub />
+        </a>
+
+        <Link
+          class="fs-d2 ct-rev-honey-dark ct-rev-honey-on-hover"
+          href="/settings"
+        >
+          <MdSettings />
+        </Link>
+      </section>
     </h1>
   );
 };

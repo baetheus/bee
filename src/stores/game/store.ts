@@ -30,6 +30,7 @@ export const useGameDispatch = useDispatchFactory(gameStore, useCallback);
 /** Lenses */
 const rootProp = Lens.fromProp<GameState>();
 export const notificationL = rootProp("notification");
+export const settingsL = rootProp("settings");
 export const gamesL = rootProp("games");
 export const gameG = (id: string) =>
   gamesL.composeOptional(Optional.fromNullableProp<GameState["games"]>()(id));
@@ -94,11 +95,14 @@ gameStore.addReducers(foundWordCase);
 const buzz = action.simple<number[]>("BUZZ");
 const failureBuzz = buzz([50]);
 const successBuzz = buzz([125, 250, 75, 50, 75, 50, 300]);
-const buzzRunEvery = filterEvery(buzz, (_, { value }) => {
-  if (notNil(navigator.vibrate)) {
-    navigator.vibrate(value);
+const buzzRunEvery = filterEvery(
+  buzz,
+  ({ settings: { vibration } }: GameState, { value }) => {
+    if (vibration && notNil(navigator.vibrate)) {
+      navigator.vibrate(value);
+    }
   }
-});
+);
 gameStore.addRunEverys(buzzRunEvery);
 
 /** Get New Games */
@@ -122,6 +126,15 @@ gameStore
   .addReducers(getNewGamesSuccessCase)
   .addRunOnces(getNewGamesRunOnce)
   .dispatch(getNewGames.pending("new_games.json"));
+
+/** Settings */
+export const changeSettings = action.simple<Partial<GameState["settings"]>>(
+  "CHANGE_SETTINGS"
+);
+const changeSettingsCase = caseFn(changeSettings, (s: GameState, { value }) =>
+  settingsL.modify((s) => ({ ...s, ...value }))(s)
+);
+gameStore.addReducers(changeSettingsCase);
 
 /** Storage */
 const storage = createStateRestore<GameStateCodec, GameState>(

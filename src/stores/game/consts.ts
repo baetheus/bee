@@ -14,6 +14,9 @@ export const badNotice = (message: string): Notice => ({
 
 export const INITIAL_GAME_STATE: GameState = {
   notification: none,
+  settings: {
+    vibration: true,
+  },
   games: {
     bdehint_n: {
       id: "bdehint_n",
