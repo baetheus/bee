@@ -12,9 +12,6 @@ export const GameStateCodec = C.type({
       date: C.string,
     })
   ),
-  settings: C.type({
-    vibration: C.boolean,
-  }),
 });
 export type GameStateCodec = C.TypeOf<typeof GameStateCodec>;
 
