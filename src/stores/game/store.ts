@@ -67,6 +67,10 @@ const submitWordRunEvery = filterEvery(
   submitWord,
   (s: GameState, { value: { id, guess } }) => {
     const game = gameG(id).getOption(s);
+    const save = saveG(id).get(s);
+
+    console.log("Hello");
+
     if (isNone(game)) {
       return setNotification(badNotice("No game!"));
     }
@@ -75,7 +79,7 @@ const submitWordRunEvery = filterEvery(
       return from([setNotification(badNotice(`${guess}`.toUpperCase()))]);
     }
 
-    if (game.value.found.some(eqInsensitive(guess))) {
+    if (save.found.some(eqInsensitive(guess))) {
       return from([setNotification(badNotice("Already Found"))]);
     }
 

@@ -12,11 +12,14 @@ import { Honeycomb } from "./Honeycomb";
 import { Notification } from "./Notification";
 import { Found } from "./Found";
 import { Highlight } from "./Highlight";
+import { DetailOptions } from "stores/settings/models";
 
 interface GameProps {
   game: GameModel;
   found: string[];
+  details: DetailOptions;
   notification: Option<Notice>;
+  onDetailsChange?: (details: DetailOptions) => void;
   onSubmit?: (word: string) => void;
 }
 
@@ -25,7 +28,9 @@ const MAX_WORD_SIZE = 17;
 export const Game: FunctionalComponent<GameProps> = ({
   game,
   found,
+  details,
   notification,
+  onDetailsChange = () => {},
   onSubmit = () => {},
 }) => {
   const [word, setWord] = useState("");
@@ -112,7 +117,13 @@ export const Game: FunctionalComponent<GameProps> = ({
         </div>
       </div>
 
-      <Found game={game} found={found} className="vw-p100" />
+      <Found
+        game={game}
+        found={found}
+        word={word}
+        details={details}
+        onDetailsChange={onDetailsChange}
+      />
     </div>
   );
 };

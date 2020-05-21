@@ -1,14 +1,14 @@
 import * as C from "io-ts/es6/Codec";
 
-import { SettingsState } from "./models";
+import { SettingsState, DetailOptions } from "./models";
 
 export const INITIAL_SETTINGS_STATE: SettingsState = {
   vibration: true,
-  showAnswers: false,
+  details: DetailOptions.words,
 };
 
 export const SettingsStateCodec = C.type({
   vibration: C.boolean,
-  showAnswers: C.boolean,
+  details: C.literal(DetailOptions.stats, DetailOptions.words),
 });
 export type SettingsStateCodec = C.TypeOf<typeof SettingsStateCodec>;
