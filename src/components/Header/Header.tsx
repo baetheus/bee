@@ -1,7 +1,7 @@
 import { h } from "preact";
 import { Link } from "preact-router/match";
 import { GiTreeBeehive } from "react-icons/gi";
-import { FaGithub } from "react-icons/fa";
+// import { FaGithub } from "react-icons/fa";
 import { MdSettings } from "react-icons/md";
 
 export const Header = () => {
@@ -14,16 +14,17 @@ export const Header = () => {
         <span>bee</span>
       </Link>
 
-      <section class="fld-row flg-4 ai-ctr jc-ctr">
-        <a
-          class="fs-d2 ct-rev-honey-dark ct-rev-honey-on-hover"
+      <section class="fld-row flg-5 ai-ctr jc-ctr">
+        {/* <a
+          class="ct-rev-honey-dark ct-rev-honey-on-hover sq-px32 fs-d1 fld-row ai-ctr jc-ctr"
           href="https://github.com/baetheus/bee"
         >
           <FaGithub />
-        </a>
+        </a> */}
 
         <Link
-          class="fs-d2 ct-rev-honey-dark ct-rev-honey-on-hover"
+          class="ct-rev-honey-dark ct-rev-honey-on-hover sq-px32 fs-d1 fld-row ai-ctr jc-ctr"
+          activeClassName="cf-honey-dark"
           href="/settings"
         >
           <MdSettings />

@@ -1,7 +1,8 @@
 {
   "scripts": {
     "start": "parcel --no-cache src/index.html",
-    "build": "parcel build src/index.html && cp static/* dist/"
+    "build": "parcel build src/index.html && cp static/* dist/",
+    "test": "tsc"
   },
   "devDependencies": {
     "@babel/plugin-transform-react-jsx": "^7.9.4",
@@ -23,7 +24,8 @@
     "monocle-ts": "^2.1.0",
     "preact": "^10.4.1",
     "preact-router": "^3.2.1",
-    "react-icons": "^3.10.0"
+    "react-icons": "^3.10.0",
+    "reselect": "^4.0.0"
   },
   "alias": {
     "react": "preact/compat",

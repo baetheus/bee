@@ -1,19 +1,20 @@
 import { h, FunctionalComponent } from "preact";
 import { format, parseISO } from "date-fns";
-
-import { useGameStore, selectAvailableGames } from "../stores/game";
-import { DefaultLayout } from "../components/Layouts";
-import { Header } from "../components/Header";
 import { Link } from "preact-router";
 
+import { useGameStore, selectAvailableGames } from "../stores/game";
+
+import { DefaultLayout } from "../components/Layouts";
+import { Header } from "../components/Header";
+
 export const GameListPage: FunctionalComponent<{}> = () => {
-  const [games] = useGameStore(selectAvailableGames);
+  const [data] = useGameStore(selectAvailableGames);
 
   return (
     <DefaultLayout>
       <Header />
       <section class="fld-col flg-4 ai-stc">
-        {games.map((game) => (
+        {data.map(({ game, save }) => (
           <Link
             href={`/games/${game.id}`}
             class="fld-col flg-3 ce-rev-honey cb-honey-on-hover pwa-4 bwa-1 bra-1 crsr-pointer"
@@ -27,7 +28,7 @@ export const GameListPage: FunctionalComponent<{}> = () => {
               </span>
 
               <span class="fld-row flg-3 fs-d2">
-                <span>{game.found.length}</span>
+                <span>{save.found.length}</span>
                 <span class="fw-0">/</span>
                 <span>{game.dictionary.length}</span>
               </span>

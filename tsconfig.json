@@ -3,6 +3,16 @@
     "strict": true,
     "jsx": "react",
     "jsxFactory": "h",
-    "lib": ["DOM", "ES7"]
-  }
+    "lib": ["DOM", "ES2015"],
+
+    "skipLibCheck": true,
+    "noEmit": true,
+    "baseUrl": "./src",
+    "paths": {
+      "react": ["preact/compat"],
+      "react-dom/test-utils": ["preact/test-utils"],
+      "react-dom": ["preact/compat"]
+    }
+  },
+  "include": ["./src/index.tsx"]
 }

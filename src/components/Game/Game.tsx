@@ -15,6 +15,7 @@ import { Highlight } from "./Highlight";
 
 interface GameProps {
   game: GameModel;
+  found: string[];
   notification: Option<Notice>;
   onSubmit?: (word: string) => void;
 }
@@ -23,6 +24,7 @@ const MAX_WORD_SIZE = 17;
 
 export const Game: FunctionalComponent<GameProps> = ({
   game,
+  found,
   notification,
   onSubmit = () => {},
 }) => {
@@ -110,7 +112,7 @@ export const Game: FunctionalComponent<GameProps> = ({
         </div>
       </div>
 
-      <Found game={game} className="vw-p100" />
+      <Found game={game} found={found} className="vw-p100" />
     </div>
   );
 };

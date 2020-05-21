@@ -1,7 +1,11 @@
-import { none } from "fp-ts/es6/Option";
-import { endOfTomorrow } from "date-fns";
+import { none, getEq } from "fp-ts/es6/Option";
+import { eq } from "fp-ts/es6/Eq";
 
-import { GameState, Notice } from "./models";
+import { GameState, Notice, GameAndSave } from "./models";
+
+export const eqGameAndSave = getEq<GameAndSave>({
+  equals: (a, b) => a.game === b.game && a.save === b.save,
+});
 
 export const goodNotice = (message: string): Notice => ({
   type: "good",
@@ -14,9 +18,7 @@ export const badNotice = (message: string): Notice => ({
 
 export const INITIAL_GAME_STATE: GameState = {
   notification: none,
-  settings: {
-    vibration: true,
-  },
+  saves: {},
   games: {
     bdehint_n: {
       id: "bdehint_n",

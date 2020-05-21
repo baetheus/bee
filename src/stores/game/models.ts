@@ -9,6 +9,11 @@ export type Game = {
   date: string;
 };
 
+export type Save = {
+  id: string;
+  found: string[];
+};
+
 export type Notice = {
   type: "good" | "bad";
   message: string;
@@ -17,7 +22,10 @@ export type Notice = {
 export interface GameState {
   notification: Option<Notice>;
   games: Record<string, Game>;
-  settings: {
-    vibration: boolean;
-  };
+  saves: Record<string, Save>;
 }
+
+export type GameAndSave = {
+  game: Game;
+  save: Save;
+};

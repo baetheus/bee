@@ -1,14 +1,15 @@
 import { h, FunctionalComponent } from "preact";
 import { useCallback } from "preact/hooks";
+import { identity } from "fp-ts/es6/function";
 import { MdVibration } from "react-icons/md";
 
-import { useGameStore, settingsL, changeSettings } from "../stores/game";
+import { useSettingsStore, changeSettings } from "../stores/settings";
 import { DefaultLayout } from "../components/Layouts";
 import { Button } from "../components/Button";
 import { Header } from "../components/Header";
 
 export const SettingsPage: FunctionalComponent<{}> = () => {
-  const [{ vibration }, dispatch] = useGameStore(settingsL.get);
+  const [{ vibration }, dispatch] = useSettingsStore(identity);
   const handleVibration = useCallback(
     () => dispatch(changeSettings({ vibration: !vibration })),
     [vibration]

@@ -41,3 +41,10 @@ export const zip = <A, B>(as: A[], bs: B[]): (A & B)[] => {
   }
   return result;
 };
+
+function onlyUnique<A>(value: A, index: number, self: A[]) {
+  return self.indexOf(value) === index;
+}
+
+export const merge = <A>(as: A[], bs: A[]): A[] =>
+  as.concat(bs).filter(onlyUnique);

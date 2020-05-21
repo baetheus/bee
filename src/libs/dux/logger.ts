@@ -1,5 +1,6 @@
 import * as G from "io-ts/es6/Guard";
 import { MetaReducer } from "@nll/dux/Store";
+import { identity } from "fp-ts/es6/function";
 
 const ErrorAction = G.type({
   error: G.literal(true),
@@ -11,28 +12,29 @@ const HasErrorMessage = G.type({
   }),
 });
 
-export const logger = <S>(key = "SHOW_LOG"): MetaReducer<S> => (reducer) => {
+export const logger = <S>(key = "SHOW_LOG"): MetaReducer<S> => {
   const showLogs = window.localStorage.getItem(key) === "true";
   if (!showLogs) {
-    return reducer;
+    return identity;
   }
+  return (reducer) => {
+    return (state, action) => {
+      const _state = reducer(state, action);
 
-  return (state, action) => {
-    const _state = reducer(state, action);
-
-    console.groupCollapsed(action.type);
-    if (ErrorAction.is(action)) {
-      if (HasErrorMessage.is(action)) {
-        console.error(action.value.error);
+      console.groupCollapsed(action.type);
+      if (ErrorAction.is(action)) {
+        if (HasErrorMessage.is(action)) {
+          console.error(action.value.error);
+        }
+        console.log("Error Action", action);
+      } else {
+        console.log("Action", action);
       }
-      console.log("Error Action", action);
-    } else {
-      console.log("Action", action);
-    }
-    console.log("State Before", state);
-    console.log("State After", _state);
-    console.groupEnd();
+      console.log("State Before", state);
+      console.log("State After", _state);
+      console.groupEnd();
 
-    return _state;
+      return _state;
+    };
   };
 };

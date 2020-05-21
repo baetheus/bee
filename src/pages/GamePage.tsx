@@ -4,10 +4,11 @@ import { fold } from "fp-ts/es6/Option";
 
 import {
   useGameStore,
-  selectGameById,
-  Game as GameModel,
+  selectGameAndSaveById,
   submitWord,
   notificationL,
+  GameAndSave,
+  eqGameAndSave,
 } from "../stores/game";
 import { ErrorCard } from "../components/ErrorCard";
 import { Game } from "../components/Game";
@@ -21,8 +22,8 @@ interface GamePageProps {
 export const GamePage: FunctionalComponent<GamePageProps> = ({
   id = "new",
 }) => {
-  const selectGame = useCallback(selectGameById(id), [id]);
-  const [game, dispatch] = useGameStore(selectGame);
+  const selectGame = useCallback(selectGameAndSaveById(id), [id]);
+  const [data, dispatch] = useGameStore(selectGame, eqGameAndSave.equals);
   const [notification] = useGameStore(notificationL.get);
 
   const handleSubmit = useCallback(
@@ -40,14 +41,15 @@ export const GamePage: FunctionalComponent<GamePageProps> = ({
             error={`Game with id '${id}' does not exist!`}
           />
         ),
-        (game: GameModel) => (
+        ({ game, save }: GameAndSave) => (
           <Game
             game={game}
+            found={save.found}
             notification={notification}
             onSubmit={handleSubmit}
           />
         )
-      )(game)}
+      )(data)}
     </DefaultLayout>
   );
 };

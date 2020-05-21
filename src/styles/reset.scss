@@ -138,3 +138,8 @@ textarea:focus {
   grid-template-columns: repeat(auto-fill, minmax(13ch, 1fr));
   grid-gap: var(--margin-width-2);
 }
+
+.sq-px32 {
+  width: 32px;
+  height: 32px;
+}

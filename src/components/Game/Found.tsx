@@ -10,36 +10,39 @@ import { eqInsensitive } from "../../libs/strings";
 
 interface FoundProps {
   game: Game;
+  found: string[];
   className?: string;
 }
 
-export const Found: FunctionalComponent<FoundProps> = ({ game, className }) => {
+export const Found: FunctionalComponent<FoundProps> = ({
+  game,
+  found,
+  className,
+}) => {
   const [show, setShow] = useState(false);
   const handleShow = useCallback(() => {
-    if (game.found.length > 0) {
+    if (found.length > 0) {
       setShow((s) => !s);
     }
   }, [game, show, setShow]);
 
   const [showAll, setShowAll] = useState(false);
   const handleShowAll = useCallback(() => setShowAll((s) => !s), [setShowAll]);
-  const list = showAll ? game.dictionary : game.found;
+  const list = showAll ? game.dictionary : found;
 
   return (
     <div class={`fld-col flg-4 ${className}`}>
       <div class="fld-row flg-4 jc-spb">
         <span class="fld-row flg-4">
           <span>Found Words</span>
-          <span>{game.found.length}</span>
+          <span>{found.length}</span>
           <span class="fw-0">/</span>
           <span>{game.dictionary.length}</span>
         </span>
 
         <span
           class={`${
-            game.found.length > 0
-              ? "ct-rev-honey-dark crsr-pointer"
-              : "cf-disabled"
+            found.length > 0 ? "ct-rev-honey-dark crsr-pointer" : "cf-disabled"
           } fw-0`}
           onClick={handleShow}
         >
@@ -52,9 +55,7 @@ export const Found: FunctionalComponent<FoundProps> = ({ game, className }) => {
             {list.sort().map((word) => (
               <li
                 class={
-                  game.found.some(eqInsensitive(word))
-                    ? "ct-rev-honey-dark"
-                    : ""
+                  found.some(eqInsensitive(word)) ? "ct-rev-honey-dark" : ""
                 }
               >
                 {word}

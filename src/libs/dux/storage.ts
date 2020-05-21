@@ -3,7 +3,11 @@ import * as E from "fp-ts/es6/Either";
 import { draw } from "io-ts/es6/Tree";
 import { pipe } from "fp-ts/es6/pipeable";
 import { Reducer, caseFn } from "@nll/dux/Reducers";
-import { actionCreatorFactory, AsyncActionCreators } from "@nll/dux/Actions";
+import {
+  actionCreatorFactory,
+  AsyncActionCreators,
+  ActionCreator,
+} from "@nll/dux/Actions";
 import { asyncConcatMap } from "@nll/dux/Operators";
 import { RunOnce, filterEvery, RunEvery, Store } from "@nll/dux/Store";
 import { of, Observable, throwError, interval } from "rxjs";
@@ -76,6 +80,16 @@ const intervalFactory = <A>({ pending }: StorageAction<unknown>) => (
   period: number
 ): RunOnce<A> => () => interval(period).pipe(map(() => pending(key)));
 
+const actionMapFactory = (
+  setState: ActionCreator<string>,
+  key: string,
+  creators: ActionCreator<any>[]
+): RunEvery<any> => (_, action) => {
+  if (creators.some((c) => c.match(action))) {
+    return setState(key);
+  }
+};
+
 const setStateCaseFactory = <A, B extends A>({
   success,
 }: StorageAction<A>): Reducer<B> =>
@@ -104,7 +118,7 @@ export const createStateRestore = <A, B extends A>(
   codec: C.Codec<A>,
   key: string
 ) => {
-  const creator = actionCreatorFactory(`LOCALSTORAGE_${key}`);
+  const creator = actionCreatorFactory(key);
 
   // Set State
   const setState = creator.async<string, unknown, string>("SET_STATE");
@@ -118,12 +132,29 @@ export const createStateRestore = <A, B extends A>(
   // Set State on Interval
   const intervalRunOnce = intervalFactory(setState);
 
-  // Wireup Store
-  const wireup = (store: Store<B>, period = 5 * 1000): Store<B> => {
+  // Wireup Store With Interval
+  const wireupInterval = (store: Store<B>, period = 5 * 1000): Store<B> => {
     store
       .addReducers(getStateCase)
       .addRunEverys(setStateRunEvery)
       .addRunOnces(getStateRunOnce, intervalRunOnce(key, period))
+      .dispatch(getState.pending(key));
+
+    return store;
+  };
+
+  // Wireup Store With Actions
+  const wireupActions = (
+    store: Store<B>,
+    actions: ActionCreator<any>[]
+  ): Store<B> => {
+    store
+      .addReducers(getStateCase)
+      .addRunEverys(
+        setStateRunEvery,
+        actionMapFactory(setState.pending, key, actions)
+      )
+      .addRunOnces(getStateRunOnce)
       .dispatch(getState.pending(key));
 
     return store;
@@ -136,6 +167,7 @@ export const createStateRestore = <A, B extends A>(
     getStateCase,
     getStateRunOnce,
     intervalRunOnce,
-    wireup,
+    wireupInterval,
+    wireupActions,
   };
 };
