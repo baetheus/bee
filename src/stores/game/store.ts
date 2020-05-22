@@ -18,6 +18,7 @@ import { INITIAL_GAME_STATE, badNotice, goodNotice } from "./consts";
 import { GamesCodec, SaveStateCodec } from "./validators";
 import { asyncExhaustMap } from "@nll/dux/Operators";
 import { mapDecode } from "../../libs/ajax";
+import { settingsStore, failureBuzz, successBuzz } from "stores/settings";
 
 /** Setup Store */
 const action = actionCreatorFactory("GAME_STORE");
@@ -76,17 +77,21 @@ const submitWordRunEvery = filterEvery(
     console.log("Hello");
 
     if (!DE.isSuccess(game)) {
+      settingsStore.dispatch(failureBuzz);
       return setNotification(badNotice("No game!"));
     }
 
     if (!game.value.right.dictionary.some(eqInsensitive(guess))) {
+      settingsStore.dispatch(failureBuzz);
       return from([setNotification(badNotice(`${guess}`.toUpperCase()))]);
     }
 
     if (save.found.some(eqInsensitive(guess))) {
+      settingsStore.dispatch(failureBuzz);
       return from([setNotification(badNotice("Already Found"))]);
     }
 
+    settingsStore.dispatch(successBuzz);
     return from([
       setNotification(goodNotice(`${guess}`.toUpperCase())),
       foundWord({ id, guess }),
