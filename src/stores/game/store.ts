@@ -36,10 +36,8 @@ export const notificationL = rootProp("notification");
 
 export const gamesL = rootProp("games");
 export const gameGetter = (id: string) =>
-  new Getter((de: DE.DatumEither<Error, Record<string, Game>>) =>
-    DE.chain((r: Record<string, Game>) => DE.fromNullable<Error, Game>(r[id]))(
-      de
-    )
+  new Getter(
+    DE.chain((r: Record<string, Game>) => DE.fromNullable<Error, Game>(r[id]))
   );
 export const gameG = (id: string) => gamesL.composeGetter(gameGetter(id));
 
