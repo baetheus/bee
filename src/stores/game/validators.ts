@@ -6,11 +6,10 @@ export const GameCodec: C.Codec<Game> = C.type({
   id: C.string,
   chars: C.array(C.string),
   middle: C.string,
-  found: C.array(C.string),
   dictionary: C.array(C.string),
   date: C.string,
 });
-export const GamesCodec = C.array(GameCodec);
+export const GamesCodec = C.record(GameCodec);
 
 /** Save / Saves */
 export const SaveCodec: C.Codec<Save> = C.type({

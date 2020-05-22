@@ -2,6 +2,7 @@ import { h, FunctionalComponent } from "preact";
 import { useCallback } from "preact/hooks";
 import { fold } from "fp-ts/es6/Option";
 import { identity } from "fp-ts/es6/function";
+import { datumEither as DE } from "@nll/datum";
 
 import {
   useGameStore,
@@ -43,7 +44,8 @@ export const GamePage: FunctionalComponent<GamePageProps> = ({
   return (
     <DefaultLayout>
       <Header />
-      {fold(
+      {DE.squash(
+        () => <div>Loading</div>,
         () => (
           <ErrorCard
             title="Game Not Found"

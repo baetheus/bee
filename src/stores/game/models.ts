@@ -1,11 +1,11 @@
 import { Option } from "fp-ts/es6/Option";
+import { DatumEither } from "@nll/datum/DatumEither";
 
 export type Game = {
   id: string;
   chars: string[];
   middle: string;
   dictionary: string[];
-  found: string[];
   date: string;
 };
 
@@ -21,7 +21,7 @@ export type Notice = {
 
 export interface GameState {
   notification: Option<Notice>;
-  games: Record<string, Game>;
+  games: DatumEither<Error, Record<string, Game>>;
   saves: Record<string, Save>;
 }
 
