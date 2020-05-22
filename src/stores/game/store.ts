@@ -136,8 +136,11 @@ export const selectAvailableGames = createSelector(
     return DE.map((games: Record<string, Game>) =>
       Object.keys(games)
         .map((key) => games[key])
+        // Only show games released beforee end of day
         .filter((game) => isBefore(parseISO(game.date), endOfToday()))
+        // Sort games by release date
         .sort((a, b) => compareDesc(parseISO(a.date), parseISO(b.date)))
+        // Merge game and save data
         .map((game) => ({ game, save: saveGNN(game.id).get(saves) }))
     )(gamesDE);
   }
