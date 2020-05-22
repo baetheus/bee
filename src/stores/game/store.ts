@@ -74,8 +74,6 @@ const submitWordRunEvery = filterEvery(
     const game = gameG(id).get(s);
     const save = saveG(id).get(s);
 
-    console.log("Hello");
-
     if (!DE.isSuccess(game)) {
       settingsStore.dispatch(failureBuzz);
       return setNotification(badNotice("No game!"));
