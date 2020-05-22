@@ -1,14 +1,15 @@
 import { h, FunctionalComponent, Fragment } from "preact";
 import { useState, useCallback, useMemo } from "preact/hooks";
-
-import { Game } from "../../stores/game";
+import { isBefore, parseISO, startOfToday } from "date-fns";
 
 import { If } from "../Control";
 import { Button } from "../Button";
-import { isBefore, parseISO, startOfToday } from "date-fns";
-import { eqInsensitive } from "../../libs/strings";
+
 import { DetailOptions } from "../../stores/settings";
+import { Game } from "../../stores/game";
+import { eqInsensitive } from "../../libs/strings";
 import { notNil } from "../../libs/typeguards";
+import { isIn } from "../../libs/arrays";
 
 interface WordListProps {
   words: string[];
@@ -44,6 +45,8 @@ const WordList: FunctionalComponent<WordListProps> = ({
 interface StatsProps {
   found: string[];
   dictionary: string[];
+  chars: string[];
+  middle: string;
 }
 
 const getStats = (words: string[]) => {
@@ -58,7 +61,19 @@ const getStats = (words: string[]) => {
   return stats;
 };
 
-const Stats: FunctionalComponent<StatsProps> = ({ found, dictionary }) => {
+const getPangrams = (dictionary: string[], chars: string[], middle: string) => {
+  const allchars = chars.concat(middle);
+  return dictionary.filter((word) =>
+    allchars.every((char) => word.includes(char))
+  );
+};
+
+const Stats: FunctionalComponent<StatsProps> = ({
+  found,
+  dictionary,
+  chars,
+  middle,
+}) => {
   const dictStatsArray = useMemo(() => {
     const stats = getStats(dictionary);
     return Object.keys(stats).map((key) => ({
@@ -67,6 +82,15 @@ const Stats: FunctionalComponent<StatsProps> = ({ found, dictionary }) => {
     }));
   }, [dictionary]);
   const foundStats = useMemo(() => getStats(found), [found]);
+  const pangrams = useMemo(() => getPangrams(dictionary, chars, middle), [
+    dictionary,
+    chars,
+    middle,
+  ]);
+  const foundPangrams = useMemo(() => found.filter(isIn(pangrams)), [
+    found,
+    pangrams,
+  ]);
 
   return (
     <Fragment>
@@ -74,6 +98,12 @@ const Stats: FunctionalComponent<StatsProps> = ({ found, dictionary }) => {
         Found {found.length} / {dictionary.length}
       </p>
       <ul class="fs-d1 fld-col flg-2">
+        <li class="fld-row flg-3 jc-spb ce-rev-light bwb-1">
+          <span>Pangrams!</span>
+          <span>
+            {foundPangrams.length} / {pangrams.length}
+          </span>
+        </li>
         {dictStatsArray.map(({ key, value }) => (
           <li class="fld-row flg-3 jc-spb ce-rev-light bwb-1">
             <span>{key} letter words</span>
@@ -155,7 +185,14 @@ export const Found: FunctionalComponent<FoundProps> = ({
         </If>
 
         <If predicate={details === "stats"}>
-          {() => <Stats found={found} dictionary={game.dictionary} />}
+          {() => (
+            <Stats
+              found={found}
+              dictionary={game.dictionary}
+              chars={game.chars}
+              middle={game.middle}
+            />
+          )}
         </If>
 
         <If predicate={isBefore(parseISO(game.date), startOfToday())}>

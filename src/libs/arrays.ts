@@ -1,3 +1,5 @@
+import { eq } from "./fns";
+
 export function shuffle<T>(ts: T[]): T[] {
   const array = [...ts];
   for (let i = array.length - 1; i > 0; i--) {
@@ -48,3 +50,10 @@ function onlyUnique<A>(value: A, index: number, self: A[]) {
 
 export const merge = <A>(as: A[], bs: A[]): A[] =>
   as.concat(bs).filter(onlyUnique);
+
+/**
+ * Curried check for object in array function.
+ */
+export const isIn = <T>(as: ReadonlyArray<T>, comparitor: typeof eq = eq) => (
+  b: T
+): boolean => as.some(comparitor(b));
