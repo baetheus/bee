@@ -1,7 +1,7 @@
 import { h } from "preact";
 import { Link } from "preact-router/match";
 import { GiTreeBeehive } from "react-icons/gi";
-import { FaGithub } from "react-icons/fa";
+import { FaGithub, FaCoffee } from "react-icons/fa";
 import { MdSettings } from "react-icons/md";
 
 export const Header = () => {
@@ -20,6 +20,13 @@ export const Header = () => {
           href="https://github.com/baetheus/bee"
         >
           <FaGithub />
+        </a>
+
+        <a
+          class="ct-rev-honey-dark ct-rev-honey-on-hover sq-px32 fs-d1 fld-row ai-ctr jc-ctr"
+          href="https://www.buymeacoffee.com/baetheus"
+        >
+          <FaCoffee />
         </a>
 
         <Link
