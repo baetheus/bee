@@ -9,3 +9,9 @@
 
 /*.json
   cache-control: public,max-age=604800
+
+/*.ttf
+  cache-control: public,max-age=604800
+
+/*.ico
+  cache-control: public,max-age=604800
