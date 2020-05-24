@@ -21,8 +21,8 @@ export const useCanvas2d = (
   { width, height }: { width: number; height: number },
   fn: (ctx: CanvasRenderingContext2D) => void | (() => void),
   inputs: Inputs
-): PropRef<HTMLCanvasElement> =>
-  useCanvas(
+): PropRef<HTMLCanvasElement> => {
+  return useCanvas(
     (canvas) => {
       const ctx = canvas.getContext("2d");
 
@@ -42,6 +42,7 @@ export const useCanvas2d = (
     },
     [width, height, ...inputs]
   );
+};
 
 /** Use Font */
 export const useFont = (

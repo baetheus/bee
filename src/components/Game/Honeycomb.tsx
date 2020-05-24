@@ -1,5 +1,5 @@
 import { h, FunctionalComponent } from "preact";
-import { useMemo, useCallback } from "preact/hooks";
+import { useMemo, useCallback, useState, useEffect } from "preact/hooks";
 
 import { range, zip } from "../../libs/arrays";
 import { useCanvas2d } from "../../libs/preact";
@@ -78,6 +78,11 @@ const makeHexes = (
   return hexes;
 };
 
+const toCtx = (
+  canvas: HTMLCanvasElement | undefined
+): CanvasRenderingContext2D | null =>
+  notNil(canvas) ? canvas.getContext("2d") : null;
+
 export const Honeycomb: FunctionalComponent<HoneycombProps> = ({
   middle,
   chars,
@@ -125,10 +130,13 @@ export const Honeycomb: FunctionalComponent<HoneycombProps> = ({
     },
     [hexes]
   );
-  const ctx = notNil(ref.current) ? ref.current.getContext("2d") : null;
+
+  // Force rerender on canvas ref change
+  const [ctx, setCtx] = useState(toCtx(ref.current));
+  useEffect(() => setCtx(toCtx(ref.current)), [ref.current]);
+
   // Needed to scale clicks
   const dpi = window.devicePixelRatio || 1;
-
   const handleClick = useCallback(
     (event: MouseEvent) => {
       if (notNil(ctx)) {
