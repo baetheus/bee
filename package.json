@@ -1,7 +1,8 @@
 {
   "scripts": {
-    "start": "parcel --no-cache src/index.html",
-    "build": "parcel build src/index.html && cp static/* dist/",
+    "start": "npm run copy && parcel --no-cache src/index.html",
+    "build": "parcel build src/index.html && npm run copy",
+    "copy": "cp static/* dist/",
     "test": "tsc"
   },
   "devDependencies": {

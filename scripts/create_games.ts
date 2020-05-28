@@ -1,8 +1,9 @@
 import { either as E, pipeable as P } from "https://cdn.pika.dev/fp-ts@^2.6.1";
 
-type Dictionary = {
-  words: string[];
-};
+const PREFIX = "italian";
+const FILE = "./italian.json";
+
+type Dictionary = string[];
 
 const notNil = <T>(t: T): t is NonNullable<T> => t !== undefined && t !== null;
 const eq = <T>(a: T) => (b: T): boolean => a === b;
@@ -20,12 +21,9 @@ function tryParse(data: any): E.Either<string, unknown> {
 }
 
 function isDictionary(data: unknown): data is Dictionary {
-  if (typeof data !== "object") return false;
-  if (!notNil(data)) return false;
-  if (!data.hasOwnProperty("words")) return false;
-  if (!Array.isArray((<any>data).words)) return false;
-  if ((<any>data).words.some((word: any) => typeof word !== "string"))
-    return false;
+  if (!Array.isArray(<any>data)) return false;
+  // if ((<any>data).words.some((word: any) => typeof word !== "string"))
+  //   return false;
   return true;
 }
 
@@ -40,7 +38,7 @@ function parseDictionary(dict: string): E.Either<string, Dictionary> {
   );
 }
 
-const rawDictionary = await Deno.readTextFile("./dictionary.json");
+const rawDictionary = await Deno.readTextFile(FILE);
 const dictionaryE = parseDictionary(rawDictionary);
 
 if (E.isLeft(dictionaryE)) {
@@ -57,7 +55,7 @@ function toUniqueLetters(word: string): string {
     .join("");
 }
 
-dictionary.words.forEach((word) => {
+dictionary.forEach((word) => {
   const unique = toUniqueLetters(word);
   if (unique.length === 7) {
     if (notNil(sevenPangrams[unique])) {
@@ -80,7 +78,7 @@ const pangrams = Object.keys(sevenPangrams)
 console.log(`${pangrams.length} pangrams`);
 
 await Deno.writeTextFile(
-  "./pangrams.json",
+  `./${PREFIX}-pangrams.json`,
   JSON.stringify(sevenPangrams, null, 2)
 );
 
@@ -96,7 +94,7 @@ function makeGame(pangram: string): Game {
   const allChars = toUniqueLetters(pangram).split("");
   const middle = allChars[getRandomInt(0, allChars.length - 1)];
   const chars = allChars.filter((char) => char !== middle);
-  const dict = dictionary.words.filter((word) => {
+  const dict = dictionary.filter((word) => {
     const letters = word.split("");
     return letters.includes(middle) && letters.every(isIn(allChars));
   });
@@ -111,4 +109,7 @@ function makeGame(pangram: string): Game {
 
 const games = pangrams.map(makeGame);
 
-await Deno.writeTextFile("./games.json", JSON.stringify(games, null, 2));
+await Deno.writeTextFile(
+  `./${PREFIX}-games.json`,
+  JSON.stringify(games, null, 2)
+);
