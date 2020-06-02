@@ -3,7 +3,6 @@ type Game = {
   chars: string[];
   middle: string;
   dictionary: string[];
-  date: string;
 };
 
 const profanity = [
@@ -17,6 +16,7 @@ const profanity = [
   "bitches",
   "bitchier",
   "bitchiest",
+  "bitching",
   "bollocks",
   "bullocks",
   "bugger",
@@ -42,6 +42,7 @@ const profanity = [
   "niggers",
   "shit",
   "shits",
+  "shitting",
   "shittier",
   "shittiest",
   "shitass",
@@ -55,7 +56,7 @@ const profanity = [
 ];
 
 const games: Record<string, Game> = JSON.parse(
-  await Deno.readTextFile("./games_2020.json")
+  await Deno.readTextFile("./games.json")
 );
 
 function removeProfanity(game: Game): Game {
@@ -71,18 +72,14 @@ function removeProfanity(game: Game): Game {
       })
   );
   if (dictionary.length !== game.dictionary.length) {
-    console.log(
-      `Found profanity in ${game.id} release ${
-        game.date
-      }: ${foundProfanity.join(", ")}`
-    );
+    console.log(`Found profanity in ${game.id}: ${foundProfanity.join(", ")}`);
     return { ...game, dictionary };
   }
   return game;
 }
 
-function removeFound({ id, chars, middle, dictionary, date }: Game): Game {
-  return { id, chars, middle, dictionary, date };
+function removeFound({ id, chars, middle, dictionary }: Game): Game {
+  return { id, chars, middle, dictionary };
 }
 
 const newGames: Record<string, Game> = {};
@@ -92,6 +89,6 @@ Object.keys(games).forEach((key) => {
 });
 
 await Deno.writeTextFile(
-  "./no_profanity_2020.json",
+  "./no_profanity_games.json",
   JSON.stringify(newGames, null, 2)
 );
