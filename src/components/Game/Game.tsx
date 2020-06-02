@@ -4,6 +4,7 @@ import { Option } from "fp-ts/es6/Option";
 import { MdRefresh, MdBackspace, MdClear, MdCheck } from "react-icons/md";
 
 import { Game as GameModel, Notice } from "../../stores/game";
+import { DetailOptions } from "../../stores/settings";
 import { shuffle } from "../../libs/arrays";
 
 import { Button } from "../Button";
@@ -12,7 +13,6 @@ import { Honeycomb } from "./Honeycomb";
 import { Notification } from "./Notification";
 import { Found } from "./Found";
 import { Highlight } from "./Highlight";
-import { DetailOptions } from "stores/settings/models";
 
 interface GameProps {
   game: GameModel;

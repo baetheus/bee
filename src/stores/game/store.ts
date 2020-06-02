@@ -12,10 +12,18 @@ import { createSelector } from "reselect";
 import { from } from "rxjs";
 import { ajax } from "rxjs/ajax";
 
-import { GameState, Game, Notice, Save } from "./models";
 import { logger, createStateRestore } from "../../libs/dux";
 import { eqInsensitive } from "../../libs/strings";
-import { INITIAL_GAME_STATE, badNotice, goodNotice } from "./consts";
+import {
+  INITIAL_GAME_STATE,
+  badNotice,
+  goodNotice,
+  GameAndSave,
+  GameState,
+  Game,
+  Notice,
+  Save,
+} from "./consts";
 import { GamesCodec, SaveStateCodec } from "./validators";
 import { mapDecode } from "../../libs/ajax";
 import { settingsStore, failureBuzz, successBuzz } from "../settings";
@@ -141,7 +149,9 @@ export const selectAvailableGames = createSelector(
         // Sort games by release date
         .sort((a, b) => compareDesc(parseISO(a.date), parseISO(b.date)))
         // Merge game and save data
-        .map((game) => ({ game, save: saveGNN(game.id).get(saves) }))
+        .map(
+          (game): GameAndSave => ({ game, save: saveGNN(game.id).get(saves) })
+        )
     )(gamesDE);
   }
 );

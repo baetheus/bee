@@ -1,18 +1,23 @@
 {
   "compilerOptions": {
+    "esModuleInterop": true,
+    "module": "esnext",
+    "target": "esnext",
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "lib": ["dom", "esnext"],
+
+    "sourceMap": true,
     "strict": true,
+
     "jsx": "react",
     "jsxFactory": "h",
-    "lib": ["DOM", "ES2015"],
 
-    "skipLibCheck": true,
-    "noEmit": true,
-    "baseUrl": "./src",
-    "paths": {
-      "react": ["preact/compat"],
-      "react-dom/test-utils": ["preact/test-utils"],
-      "react-dom": ["preact/compat"]
-    }
+    "baseUrl": "./",
+    "paths": { "*": ["web_modules/.types/*"] },
+
+    "noEmit": true
   },
-  "include": ["./src/index.tsx"]
+  "include": ["src", "types"],
+  "exclude": ["node_modules"]
 }

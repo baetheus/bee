@@ -1,6 +1,5 @@
 import { h, FunctionalComponent } from "preact";
 import { useCallback } from "preact/hooks";
-import { fold } from "fp-ts/es6/Option";
 import { identity } from "fp-ts/es6/function";
 import { datumEither as DE } from "@nll/datum";
 
@@ -16,8 +15,11 @@ import { ErrorCard } from "../components/ErrorCard";
 import { Game } from "../components/Game";
 import { Header } from "../components/Header";
 import { DefaultLayout } from "../components/Layouts";
-import { useSettingsStore, changeSettings } from "../stores/settings";
-import { DetailOptions } from "stores/settings/models";
+import {
+  useSettingsStore,
+  changeSettings,
+  DetailOptions,
+} from "../stores/settings";
 
 interface GamePageProps {
   id?: string;

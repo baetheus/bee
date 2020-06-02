@@ -1,18 +1,23 @@
 {
   "scripts": {
-    "start": "npm run copy && parcel --no-cache src/index.html",
-    "build": "parcel build src/index.html && npm run copy",
-    "copy": "cp static/* dist/",
-    "test": "tsc"
+    "start": "snowpack dev",
+    "build": "snowpack build",
+    "test": "jest",
+    "format": "prettier --write 'src/**/*.{js,jsx}'",
+    "lint": "prettier --check 'src/**/*.{js,jsx}'"
   },
   "devDependencies": {
-    "@babel/plugin-transform-react-jsx": "^7.9.4",
-    "@babel/preset-typescript": "^7.9.0",
+    "@babel/plugin-transform-react-jsx": "^7.10.1",
+    "@babel/preset-env": "^7.10.1",
+    "@babel/preset-typescript": "^7.10.1",
+    "@snowpack/plugin-babel": "^1.0.0",
+    "@snowpack/plugin-webpack": "^1.0.5",
     "@types/css-font-loading-module": "0.0.4",
     "@types/date-fns": "^2.6.0",
-    "babel-plugin-module-resolver": "^4.0.0",
-    "parcel": "^2.0.0-alpha.3.2",
-    "sass": "^1.26.5",
+    "node-sass": "^4.14.1",
+    "prettier": "^2.0.0",
+    "rollup-plugin-scss": "^2.5.0",
+    "snowpack": "^2.0.0",
     "typescript": "^3.9.2"
   },
   "dependencies": {
@@ -28,9 +33,21 @@
     "react-icons": "^3.10.0",
     "reselect": "^4.0.0"
   },
-  "alias": {
-    "react": "preact/compat",
-    "react-dom/test-utils": "preact/test-utils",
-    "react-dom": "preact/compat"
+  "name": "bee",
+  "description": "[![Donate](https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png)](https://www.buymeacoffee.com/baetheus)",
+  "version": "1.0.0",
+  "main": "src/index.tsx",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/baetheus/bee.git"
+  },
+  "keywords": [
+    "spelling",
+    "bee"
+  ],
+  "author": "Brandon Blaylock <brandon@null.pub> (https://blaylock.dev)",
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/baetheus/bee/issues"
   }
 }

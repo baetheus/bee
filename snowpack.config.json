@@ -1,0 +1,21 @@
+{
+  "scripts": {
+    "build:scss": "node-sass $FILE",
+    "mount:public": "mount public --to /",
+    "mount:src": "mount src --to /_dist_",
+    "run:tsc": "tsc",
+    "run:tsc::watch": "$1 --watch"
+  },
+  "plugins": ["@snowpack/plugin-babel", "@snowpack/plugin-webpack"],
+  "installOptions": {
+    "installTypes": true,
+    "alias": {
+      "react": "preact/compat",
+      "react-dom/test-utils": "preact/test-utils",
+      "react-dom": "preact/compat"
+    }
+  },
+  "devOptions": {
+    "port": 1234
+  }
+}

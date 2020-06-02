@@ -1,8 +1,8 @@
 import * as C from "io-ts/es6/Codec";
-import { Game, Save } from "./models";
+import { Game, Save } from "./consts";
 
 /** Game / Games */
-export const GameCodec: C.Codec<Game> = C.type({
+export const GameCodec: C.Codec<unknown, Game> = C.type({
   id: C.string,
   chars: C.array(C.string),
   middle: C.string,
@@ -12,7 +12,7 @@ export const GameCodec: C.Codec<Game> = C.type({
 export const GamesCodec = C.record(GameCodec);
 
 /** Save / Saves */
-export const SaveCodec: C.Codec<Save> = C.type({
+export const SaveCodec: C.Codec<unknown, Save> = C.type({
   id: C.string,
   found: C.array(C.string),
 });

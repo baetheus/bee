@@ -1,6 +1,5 @@
 import { useRef, PropRef, Inputs, useEffect, useState } from "preact/hooks";
 import { notNil } from "./typeguards";
-import { BinaryData, FontFaceDescriptors } from "css-font-loading-module";
 
 /** Use Canvas */
 export const useCanvas = (
@@ -42,27 +41,4 @@ export const useCanvas2d = (
     },
     [width, height, ...inputs]
   );
-};
-
-/** Use Font */
-export const useFont = (
-  family: string,
-  source: string | BinaryData,
-  descriptors?: FontFaceDescriptors
-): FontFace | null => {
-  const [font, setFont] = useState<FontFace | null>(null);
-  useEffect(() => {
-    if (notNil(font)) {
-      return;
-    }
-    let cancelled = false;
-    new FontFace(family, source, descriptors).load().then((fontFace) => {
-      if (cancelled) {
-        return;
-      }
-      setFont(fontFace);
-    });
-    return () => (cancelled = true);
-  }, [family, source, descriptors]);
-  return font;
 };

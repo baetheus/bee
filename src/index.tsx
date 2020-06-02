@@ -2,6 +2,8 @@ import { h, render } from "preact";
 
 import { App } from "./App";
 
+import "./styles/index.scss";
+
 // Wait for font to load before rendering
 new FontFace("Markazi Text", "url(/MarkaziText.ttf)")
   .load()

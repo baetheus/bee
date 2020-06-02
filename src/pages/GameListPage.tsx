@@ -53,7 +53,7 @@ export const GameListPage: FunctionalComponent<{}> = () => {
 
       {squash(
         () => <LoadingCard title="Loading Games" />,
-        (error: Error) => (
+        (error: unknown) => (
           <ErrorCard title="Error Retrieving Games" error={error} />
         ),
         toData
