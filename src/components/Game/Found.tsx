@@ -98,20 +98,20 @@ const Stats: FunctionalComponent<StatsProps> = ({
         Found {found.length} / {dictionary.length}
       </p>
       <ul class="fs-d1 fld-col flg-2">
-        <li class="fld-row flg-3 jc-spb ce-rev-light bwb-1">
-          <span>Pangrams!</span>
-          <span>
-            {foundPangrams.length} / {pangrams.length}
-          </span>
-        </li>
         {dictStatsArray.map(({ key, value }) => (
-          <li class="fld-row flg-3 jc-spb ce-rev-light bwb-1">
+          <li class="fld-row flg-3 jc-spb ce-rev-honey bwb-1">
             <span>{key} letter words</span>
             <span class="fw-u2">
               {foundStats[key] || 0} / {value}
             </span>
           </li>
         ))}
+        <li class="fld-row flg-3 jc-spb">
+          <span>Pangrams</span>
+          <span class="fw-u2">
+            {foundPangrams.length} / {pangrams.length}
+          </span>
+        </li>
       </ul>
     </Fragment>
   );
