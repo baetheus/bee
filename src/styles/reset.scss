@@ -54,9 +54,13 @@ textarea {
   border: 0;
 }
 
+p,
+li {
+  line-height: calc(var(--font-size) * 1.5);
+}
+
 ul,
 ol {
-  list-style-position: inside;
   list-style-type: none;
 }
 
@@ -66,6 +70,12 @@ a {
 }
 
 /** Utility */
+.ls-dot {
+  list-style-position: outside;
+  list-style-type: circle;
+  margin-left: calc(var(--margin-width-4) * 4);
+}
+
 .vw-px300 {
   width: 300px;
 }
@@ -146,4 +156,8 @@ textarea:focus {
 .sq-px32 {
   width: 32px;
   height: 32px;
+}
+
+.fls-1-1-last > :last-child {
+  flex: 1 1 auto;
 }

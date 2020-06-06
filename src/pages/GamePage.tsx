@@ -13,7 +13,6 @@ import {
 } from "../stores/game";
 import { ErrorCard } from "../components/ErrorCard";
 import { Game } from "../components/Game";
-import { Header } from "../components/Header";
 import { DefaultLayout } from "../components/Layouts";
 import {
   useSettingsStore,
@@ -45,7 +44,6 @@ export const GamePage: FunctionalComponent<GamePageProps> = ({
 
   return (
     <DefaultLayout>
-      <Header />
       {DE.squash(
         () => <div>Loading</div>,
         () => (

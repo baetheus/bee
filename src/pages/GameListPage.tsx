@@ -10,7 +10,6 @@ import {
 } from "../stores/game";
 
 import { DefaultLayout } from "../components/Layouts";
-import { Header } from "../components/Header";
 import { ErrorCard } from "../components/ErrorCard";
 import { LoadingCard } from "../components/LoadingCard";
 
@@ -49,8 +48,6 @@ export const GameListPage: FunctionalComponent<{}> = () => {
 
   return (
     <DefaultLayout>
-      <Header />
-
       {squash(
         () => <LoadingCard title="Loading Games" />,
         (error: unknown) => (

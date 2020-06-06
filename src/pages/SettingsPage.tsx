@@ -6,7 +6,6 @@ import { MdVibration } from "react-icons/md";
 import { useSettingsStore, changeSettings } from "../stores/settings";
 import { DefaultLayout } from "../components/Layouts";
 import { Button } from "../components/Button";
-import { Header } from "../components/Header";
 
 export const SettingsPage: FunctionalComponent<{}> = () => {
   const [{ vibration }, dispatch] = useSettingsStore(identity);
@@ -17,8 +16,6 @@ export const SettingsPage: FunctionalComponent<{}> = () => {
 
   return (
     <DefaultLayout>
-      <Header />
-
       <div class="fld-col flg-4">
         <Button class="fld-row flg-4" onClick={handleVibration}>
           <MdVibration />
