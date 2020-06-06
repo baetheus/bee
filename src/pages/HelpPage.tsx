@@ -7,7 +7,7 @@ export const HelpPage: FunctionalComponent<HelpPageProps> = () => (
   <DefaultLayout>
     <article class="fld-col flg-6 pwa-4">
       <section class="fld-col flg-4">
-        <h2>Rules</h2>
+        <h1 class="fs-u4">Rules</h1>
         <p>
           The goal of the puzzlie is to find all of the words that can be
           created with the given seven letters. There are only a few notes:
@@ -20,10 +20,10 @@ export const HelpPage: FunctionalComponent<HelpPageProps> = () => (
       </section>
 
       <section class="fld-col flg-4">
-        <h2>Weekly Progression</h2>
+        <h1 class="fs-u4">Weekly Progression</h1>
 
         <p>
-          The puzzles change throughout the week in size and letter choices.
+          The puzzlies change throughout the week in size and letter choices.
         </p>
         <ul class="fld-col flg-4 ls-dot spaced">
           <li>Monday's puzzlies will have fewer than 41 words.</li>

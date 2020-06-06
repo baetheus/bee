@@ -28,25 +28,27 @@ const toData = (data: GameAndSave[]) => {
           href={`/games/${game.id}`}
           class="fld-row flg-4 jc-spb ai-ctr ce-rev-honey cb-honey-on-hover pwy-4 pwl-5 pwr-4 bwa-1 bra-1 crsr-pointer"
         >
-          <span class="fld-row flg-4 fw-u2 fs-u2">
+          <span class="fld-row flg-4 ai-ctr fw-u1 fs-u5 ff-head">
             <span class="cf-rev-honey-dark">{game.middle}</span>
             {game.chars.map((char) => (
               <span>{char}</span>
             ))}
           </span>
 
-          <span class="fld-col flg-3 ai-end fw-u1 fs-u1">
-            <span class="fld-row flg-3 fs-d2">
-              <span class="fw-0 fs-d1 cf-rev-honey-dark">
-                {score} point{score === 1 ? "" : "s"}
+          <span class="fld-col flg-3 ai-end fs-d1">
+            <span class="fld-row flg-4">
+              <span class="cf-rev-honey-dark">
+                <strong>{score}</strong> point{score === 1 ? "" : "s"}
               </span>
 
-              <span>{save.found.length}</span>
-              <span class="fw-0">/</span>
-              <span>{game.dictionary.length}</span>
+              <span>
+                <strong>{save.found.length}</strong>
+                <span>/</span>
+                <strong>{game.dictionary.length}</strong>
+              </span>
             </span>
 
-            <span class="fs-d2 fw-d1 as-end cf-light">
+            <span class="as-end cf-light fw-d1">
               {format(parseISO(game.date), "yyyy/MM/dd")}
             </span>
           </span>

@@ -87,15 +87,19 @@ const Stats: FunctionalComponent<StatsProps> = ({
       {dictStatsArray.map(({ key, value }) => (
         <li class="fld-row flg-3 jc-spb ce-rev-honey bwb-1">
           <span>{key} letter words</span>
-          <span class="fw-u2">
-            {foundStats[key] || 0} / {value}
+          <span>
+            <strong>{foundStats[key] || 0}</strong>
+            <span>/</span>
+            <strong>{value}</strong>
           </span>
         </li>
       ))}
       <li class="fld-row flg-3 jc-spb">
         <span>Pangrams</span>
-        <span class="fw-u2">
-          {foundPangrams.length} / {pangrams.length}
+        <span>
+          <strong>{foundPangrams.length}</strong>
+          <span>/</span>
+          <strong>{pangrams.length}</strong>
         </span>
       </li>
     </ul>
@@ -163,11 +167,12 @@ export const Found: FunctionalComponent<FoundProps> = ({
       <section class="fld-col flg-4 pwa-4">
         <div class="fld-row flg-4 jc-spb">
           <span>
-            Found {found.length} / {game.dictionary.length}
+            Found <strong>{found.length}</strong> /{" "}
+            <strong>{game.dictionary.length}</strong>
           </span>
 
-          <span class="fw-0 fs-d1 cf-rev-honey-dark">
-            {score} point{score === 1 ? "" : "s"}
+          <span class="cf-rev-honey-dark">
+            <strong>{score}</strong> point{score === 1 ? "" : "s"}
           </span>
         </div>
         <If predicate={details === "words"}>

@@ -41,6 +41,15 @@ h2,
 h3,
 h4,
 h5,
+h6 {
+  @extend .ff-head;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
 h6,
 p,
 ul,
@@ -70,6 +79,10 @@ a {
 }
 
 /** Utility */
+.td-up {
+  text-transform: uppercase;
+}
+
 .ls-dot {
   list-style-position: outside;
   list-style-type: circle;
