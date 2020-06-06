@@ -55,7 +55,7 @@ textarea {
 }
 
 p,
-li {
+ul.spaced > li {
   line-height: calc(var(--font-size) * 1.5);
 }
 

@@ -12,7 +12,7 @@ export const HelpPage: FunctionalComponent<HelpPageProps> = () => (
           The goal of the puzzle is to find all of of the words that can be
           created with the given seven letters. There are only a few notes:
         </p>
-        <ul class="fld-col flg-4 ls-dot">
+        <ul class="fld-col flg-4 ls-dot spaced">
           <li>Words must be 4 letters or longer.</li>
           <li>Words must contain the middle letter.</li>
           <li>Letters can be used more than once.</li>
@@ -25,7 +25,7 @@ export const HelpPage: FunctionalComponent<HelpPageProps> = () => (
         <p>
           The puzzles change throughout the week in size and letter choices.
         </p>
-        <ul class="fld-col flg-4 ls-dot">
+        <ul class="fld-col flg-4 ls-dot spaced">
           <li>Monday will have puzzles with fewer than 41 words.</li>
           <li>Tuesday will have puzzles with 41 to 60 words.</li>
           <li>Wednesday will have puzzles with 61 to 80 words.</li>
