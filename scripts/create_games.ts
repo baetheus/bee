@@ -1,115 +1,141 @@
-import { either as E, pipeable as P } from "https://cdn.pika.dev/fp-ts@^2.6.1";
+function create_games() {
+  const DICTIONARY_FILE = "./english-no-profanity.json";
+  const PANGRAM_GROUP_FILE = "./pangram_groups.json";
+  const PLAYED_GAME_FILE = "./games_before_20200606.json";
+  const GAME_GROUP_FILE = "./grouped_games.json";
 
-const PREFIX = "italian";
-const FILE = "./italian.json";
-
-type Dictionary = string[];
-
-const notNil = <T>(t: T): t is NonNullable<T> => t !== undefined && t !== null;
-const eq = <T>(a: T) => (b: T): boolean => a === b;
-const isIn = <T>(as: ReadonlyArray<T>, comparitor: typeof eq = eq) => (
-  b: T
-): boolean => as.some(comparitor(b));
-const getRandomInt = (min: number, max: number) =>
-  Math.floor(Math.random() * (max - min + 1) + min);
-
-function tryParse(data: any): E.Either<string, unknown> {
-  return E.tryCatch(
-    () => JSON.parse(data),
-    () => "Unable to parse json."
+  const DICTIONARY: string[] = JSON.parse(
+    Deno.readTextFileSync(DICTIONARY_FILE)
   );
-}
 
-function isDictionary(data: unknown): data is Dictionary {
-  if (!Array.isArray(<any>data)) return false;
-  // if ((<any>data).words.some((word: any) => typeof word !== "string"))
-  //   return false;
-  return true;
-}
-
-function parseDictionary(dict: string): E.Either<string, Dictionary> {
-  return P.pipe(
-    tryParse(dict),
-    E.chain((data) =>
-      isDictionary(data)
-        ? E.right(data)
-        : E.left("Dictionary is formatted incorrectly")
-    )
-  );
-}
-
-const rawDictionary = await Deno.readTextFile(FILE);
-const dictionaryE = parseDictionary(rawDictionary);
-
-if (E.isLeft(dictionaryE)) {
-  console.error(dictionaryE.left);
-  Deno.exit(1);
-}
-
-const dictionary = dictionaryE.right;
-const sevenPangrams: Record<string, string[]> = {};
-
-function toUniqueLetters(word: string): string {
-  return Array.from(new Set(word.split("")))
-    .sort()
-    .join("");
-}
-
-dictionary.forEach((word) => {
-  const unique = toUniqueLetters(word);
-  if (unique.length === 7) {
-    if (notNil(sevenPangrams[unique])) {
-      sevenPangrams[unique].push(word);
-    } else {
-      sevenPangrams[unique] = [word];
-    }
+  function toUniqueLetters(word: string): string {
+    return Array.from(new Set(word.split("")))
+      .sort()
+      .join("");
   }
-});
+  function notNil<T>(t: T): t is NonNullable<T> {
+    return t !== null && t !== undefined;
+  }
 
-console.log(`${Object.keys(sevenPangrams).length} sets of unique letters`);
+  /**
+   * Create Pangram Groups
+   */
+  const pangram_groups: Record<string, string[]> = {};
 
-const pangrams = Object.keys(sevenPangrams)
-  .map((key) => sevenPangrams[key])
-  .reduce((acc: string[], cur: string[]) => {
-    acc.push(...cur);
-    return acc;
-  }, []);
-
-console.log(`${pangrams.length} pangrams`);
-
-await Deno.writeTextFile(
-  `./${PREFIX}-pangrams.json`,
-  JSON.stringify(sevenPangrams, null, 2)
-);
-
-type Game = {
-  id: string;
-  chars: string[];
-  middle: string;
-  dictionary: string[];
-  found: string[];
-};
-
-function makeGame(pangram: string): Game {
-  const allChars = toUniqueLetters(pangram).split("");
-  const middle = allChars[getRandomInt(0, allChars.length - 1)];
-  const chars = allChars.filter((char) => char !== middle);
-  const dict = dictionary.filter((word) => {
-    const letters = word.split("");
-    return letters.includes(middle) && letters.every(isIn(allChars));
+  DICTIONARY.forEach((word) => {
+    const unique = toUniqueLetters(word);
+    if (unique.length === 7) {
+      if (notNil(pangram_groups[unique])) {
+        pangram_groups[unique].push(word);
+      } else {
+        pangram_groups[unique] = [word];
+      }
+    }
   });
-  return {
-    id: `${toUniqueLetters(pangram)}_${middle}`,
-    chars,
-    middle,
-    dictionary: dict,
-    found: [],
+
+  console.log(`${Object.keys(pangram_groups).length} sets of unique letters`);
+
+  Deno.writeTextFileSync(PANGRAM_GROUP_FILE, JSON.stringify(pangram_groups));
+
+  /**
+   * Remove played games
+   */
+  type Game = {
+    id: string;
+    chars: string[];
+    middle: string;
+    dictionary: string[];
   };
+
+  const played_games: Record<string, Game> = JSON.parse(
+    Deno.readTextFileSync(PLAYED_GAME_FILE)
+  );
+
+  /**
+   * Create games from pangram groups
+   */
+
+  function getRandomInt(min: number, max: number): number {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  function isIn<T>(ts: T[]): (t: T) => boolean {
+    return function isInInternal(t1) {
+      return ts.some((t2) => t2 === t1);
+    };
+  }
+
+  function canBeMade(
+    middle: string,
+    chars: string[]
+  ): (word: string) => boolean {
+    return function canBeMadeInternal(word) {
+      return word.split("").every(isIn(chars)) && word.includes(middle);
+    };
+  }
+
+  function makeGame(letters: string): Game {
+    const middle = letters[getRandomInt(0, letters.length - 1)];
+    const chars = letters.split("").filter((char) => char !== middle);
+    const dictionary = DICTIONARY.filter(canBeMade(middle, letters.split("")));
+
+    console.log("Make game", { letters, length: dictionary.length });
+
+    return {
+      id: `${toUniqueLetters(letters)}_${middle}`,
+      chars,
+      middle,
+      dictionary,
+    };
+  }
+
+  const games = Object.keys(pangram_groups)
+    .map(makeGame)
+    .filter((game) => played_games[game.id] === undefined)
+    .reduce(
+      (acc, cur) => {
+        if (cur.dictionary.length <= 40) {
+          acc[40].push(cur);
+        } else if (cur.dictionary.length <= 60) {
+          acc[60].push(cur);
+        } else if (cur.dictionary.length <= 80) {
+          acc[80].push(cur);
+        } else if (cur.dictionary.length <= 100) {
+          acc[100].push(cur);
+        } else if (cur.dictionary.length <= 120) {
+          acc[120].push(cur);
+        } else {
+          if (
+            cur.dictionary.some(
+              (word) => word.includes("s") || word.includes("d")
+            )
+          ) {
+            acc.sat.push(cur);
+          } else {
+            acc.sun.push(cur);
+          }
+        }
+
+        return acc;
+      },
+      {
+        40: [],
+        60: [],
+        80: [],
+        100: [],
+        120: [],
+        sat: [],
+        sun: [],
+      } as Record<string, Game[]>
+    );
+
+  Object.keys(games).forEach((key) => {
+    console.log(`Count for ${key}: ${games[key].length}`);
+  });
+
+  Deno.writeTextFileSync(GAME_GROUP_FILE, JSON.stringify(games));
 }
 
-const games = pangrams.map(makeGame);
-
-await Deno.writeTextFile(
-  `./${PREFIX}-games.json`,
-  JSON.stringify(games, null, 2)
-);
+create_games();

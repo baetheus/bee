@@ -122,7 +122,7 @@ const getGamesRunOnce = asyncExhaustMap(getGames, getGamesHandler);
 gameStore
   .addReducers(getGamesReducer)
   .addRunOnces(getGamesRunOnce)
-  .dispatch(getGames.pending("/games.20200602.json"));
+  .dispatch(getGames.pending("/games.20200606.json"));
 
 /** Save Storage - Migrate to simple wireup in one week */
 const { wireupActions } = createStateRestore<SaveStateCodec, GameState>(
