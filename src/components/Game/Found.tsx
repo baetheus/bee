@@ -153,7 +153,7 @@ export const Found: FunctionalComponent<FoundProps> = ({
   ]);
 
   return (
-    <div class={`fld-col ${className} bwa-1 bra-1 ce-rev-honey`}>
+    <div class={`fld-col ${className} bwa-1 bra-1 ce-rev-honey ova-hi`}>
       <div class="fld-row">
         <span
           class={`${
