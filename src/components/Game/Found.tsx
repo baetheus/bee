@@ -14,32 +14,22 @@ import { isIn } from "../../libs/arrays";
 interface WordListProps {
   words: string[];
   found: string[];
-  dictionary: string[];
 }
 
-const WordList: FunctionalComponent<WordListProps> = ({
-  words,
-  found,
-  dictionary,
-}) => (
-  <Fragment>
-    <p>
-      Found {found.length} / {dictionary.length}
-    </p>
-    <If predicate={words.length > 0}>
-      {() => (
-        <ul class="fit-grid-3 fs-d2">
-          {words.map((word) => (
-            <li
-              class={found.some(eqInsensitive(word)) ? "ct-rev-honey-dark" : ""}
-            >
-              {word}
-            </li>
-          ))}
-        </ul>
-      )}
-    </If>
-  </Fragment>
+const WordList: FunctionalComponent<WordListProps> = ({ words, found }) => (
+  <If predicate={words.length > 0}>
+    {() => (
+      <ul class="fit-grid-3 fs-d2">
+        {words.map((word) => (
+          <li
+            class={found.some(eqInsensitive(word)) ? "ct-rev-honey-dark" : ""}
+          >
+            {word}
+          </li>
+        ))}
+      </ul>
+    )}
+  </If>
 );
 
 interface StatsProps {
@@ -93,27 +83,22 @@ const Stats: FunctionalComponent<StatsProps> = ({
   ]);
 
   return (
-    <Fragment>
-      <p>
-        Found {found.length} / {dictionary.length}
-      </p>
-      <ul class="fs-d1 fld-col flg-2">
-        {dictStatsArray.map(({ key, value }) => (
-          <li class="fld-row flg-3 jc-spb ce-rev-honey bwb-1">
-            <span>{key} letter words</span>
-            <span class="fw-u2">
-              {foundStats[key] || 0} / {value}
-            </span>
-          </li>
-        ))}
-        <li class="fld-row flg-3 jc-spb">
-          <span>Pangrams</span>
+    <ul class="fs-d1 fld-col flg-2">
+      {dictStatsArray.map(({ key, value }) => (
+        <li class="fld-row flg-3 jc-spb ce-rev-honey bwb-1">
+          <span>{key} letter words</span>
           <span class="fw-u2">
-            {foundPangrams.length} / {pangrams.length}
+            {foundStats[key] || 0} / {value}
           </span>
         </li>
-      </ul>
-    </Fragment>
+      ))}
+      <li class="fld-row flg-3 jc-spb">
+        <span>Pangrams</span>
+        <span class="fw-u2">
+          {foundPangrams.length} / {pangrams.length}
+        </span>
+      </li>
+    </ul>
   );
 };
 
@@ -122,6 +107,7 @@ interface FoundProps {
   game: Game;
   details: DetailOptions;
   found: string[];
+  score: number;
   onDetailsChange: (details: DetailOptions) => void;
   className?: string;
 }
@@ -130,6 +116,7 @@ export const Found: FunctionalComponent<FoundProps> = ({
   word,
   game,
   found,
+  score,
   details,
   className,
   onDetailsChange,
@@ -174,14 +161,17 @@ export const Found: FunctionalComponent<FoundProps> = ({
       </div>
 
       <section class="fld-col flg-4 pwa-4">
+        <div class="fld-row flg-4 jc-spb">
+          <span>
+            Found {found.length} / {game.dictionary.length}
+          </span>
+
+          <span class="fw-0 fs-d1 cf-rev-honey-dark">
+            {score} point{score === 1 ? "" : "s"}
+          </span>
+        </div>
         <If predicate={details === "words"}>
-          {() => (
-            <WordList
-              words={words}
-              found={found}
-              dictionary={game.dictionary}
-            />
-          )}
+          {() => <WordList words={words} found={found} />}
         </If>
 
         <If predicate={details === "stats"}>

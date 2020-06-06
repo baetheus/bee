@@ -17,6 +17,7 @@ import { Highlight } from "./Highlight";
 interface GameProps {
   game: GameModel;
   found: string[];
+  score: number;
   details: DetailOptions;
   notification: Option<Notice>;
   onDetailsChange?: (details: DetailOptions) => void;
@@ -28,6 +29,7 @@ const MAX_WORD_SIZE = 17;
 export const Game: FunctionalComponent<GameProps> = ({
   game,
   found,
+  score,
   details,
   notification,
   onDetailsChange = () => {},
@@ -121,6 +123,7 @@ export const Game: FunctionalComponent<GameProps> = ({
         game={game}
         found={found}
         word={word}
+        score={score}
         details={details}
         onDetailsChange={onDetailsChange}
       />

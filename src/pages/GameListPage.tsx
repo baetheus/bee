@@ -23,7 +23,7 @@ const toData = (data: GameAndSave[]) => {
 
   return (
     <section class="fld-col flg-4 ai-stc">
-      {games.map(({ game, save }) => (
+      {games.map(({ game, save, score }) => (
         <Link
           href={`/games/${game.id}`}
           class="fld-row flg-4 jc-spb ai-ctr ce-rev-honey cb-honey-on-hover pwy-4 pwl-5 pwr-4 bwa-1 bra-1 crsr-pointer"
@@ -37,6 +37,10 @@ const toData = (data: GameAndSave[]) => {
 
           <span class="fld-col flg-3 ai-end fw-u1 fs-u1">
             <span class="fld-row flg-3 fs-d2">
+              <span class="fw-0 fs-d1 cf-rev-honey-dark">
+                {score} point{score === 1 ? "" : "s"}
+              </span>
+
               <span>{save.found.length}</span>
               <span class="fw-0">/</span>
               <span>{game.dictionary.length}</span>

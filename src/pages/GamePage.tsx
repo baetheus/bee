@@ -52,10 +52,11 @@ export const GamePage: FunctionalComponent<GamePageProps> = ({
             error={`Game with id '${id}' does not exist!`}
           />
         ),
-        ({ game, save }: GameAndSave) => (
+        ({ game, save, score }: GameAndSave) => (
           <Game
             game={game}
             found={save.found}
+            score={score}
             details={details}
             notification={notification}
             onDetailsChange={handleDetailsChange}

@@ -23,6 +23,7 @@ import {
   Game,
   Notice,
   Save,
+  foundToScore,
 } from "./consts";
 import { GamesCodec, SaveStateCodec } from "./validators";
 import { mapDecode } from "../../libs/ajax";
@@ -133,8 +134,14 @@ wireupActions(gameStore, [foundWord]);
 
 /** Selectors */
 export const selectGameAndSaveById = (id: string) =>
-  createSelector(gameG(id).get, saveG(id).get, (game, save) =>
-    DE.map((game: Game) => ({ game, save }))(game)
+  createSelector(gameG(id).get, saveG(id).get, (gameDE, save) =>
+    DE.map(
+      (game: Game): GameAndSave => ({
+        game,
+        save,
+        score: foundToScore(save.found),
+      })
+    )(gameDE)
   );
 
 export const selectAvailableGames = createSelector(
@@ -150,7 +157,10 @@ export const selectAvailableGames = createSelector(
         .sort((a, b) => compareDesc(parseISO(a.date), parseISO(b.date)))
         // Merge game and save data
         .map(
-          (game): GameAndSave => ({ game, save: saveGNN(game.id).get(saves) })
+          (game): GameAndSave => {
+            const save = saveGNN(game.id).get(saves);
+            return { game, save, score: foundToScore(save.found) };
+          }
         )
     )(gamesDE);
   }
