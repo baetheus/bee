@@ -153,6 +153,12 @@ textarea:focus {
   grid-gap: var(--margin-width-2);
 }
 
+.fit-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(13ch, 1fr));
+  grid-gap: var(--margin-width-3);
+}
+
 .sq-px32 {
   width: 32px;
   height: 32px;

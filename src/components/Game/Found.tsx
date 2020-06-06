@@ -28,7 +28,7 @@ const WordList: FunctionalComponent<WordListProps> = ({
     </p>
     <If predicate={words.length > 0}>
       {() => (
-        <ul class="fit-grid fs-d2">
+        <ul class="fit-grid-3 fs-d2">
           {words.map((word) => (
             <li
               class={found.some(eqInsensitive(word)) ? "ct-rev-honey-dark" : ""}

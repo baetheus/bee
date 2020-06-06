@@ -9,7 +9,7 @@ export const HelpPage: FunctionalComponent<HelpPageProps> = () => (
       <section class="fld-col flg-4">
         <h2>Rules</h2>
         <p>
-          The goal of the puzzle is to find all of of the words that can be
+          The goal of the puzzlie is to find all of the words that can be
           created with the given seven letters. There are only a few notes:
         </p>
         <ul class="fld-col flg-4 ls-dot spaced">
@@ -26,15 +26,15 @@ export const HelpPage: FunctionalComponent<HelpPageProps> = () => (
           The puzzles change throughout the week in size and letter choices.
         </p>
         <ul class="fld-col flg-4 ls-dot spaced">
-          <li>Monday will have puzzles with fewer than 41 words.</li>
-          <li>Tuesday will have puzzles with 41 to 60 words.</li>
-          <li>Wednesday will have puzzles with 61 to 80 words.</li>
-          <li>Thursday will have puzzles with 81 to 100 words.</li>
-          <li>Friday will have puzzles with 101 to 120 words.</li>
-          <li>Saturday will contain puzzles with more than 120 words.</li>
+          <li>Monday's puzzlies will have fewer than 41 words.</li>
+          <li>Tuesday's puzzlies will have 41 to 60 words.</li>
+          <li>Wednesday's puzzlies will have 61 to 80 words.</li>
+          <li>Thursday's puzzlies will have 81 to 100 words.</li>
+          <li>Friday's puzzlies will have 101 to 120 words.</li>
+          <li>Saturday's puzzlies will have than more 120 words.</li>
           <li>
-            Sunday will contain puzzlies with more than 120 words and will
-            exclude the letters s and d.
+            Sunday's puzzlies will have more than 120 words and will exclude the
+            letters s and d.
           </li>
         </ul>
       </section>

@@ -4,7 +4,7 @@ import { FaGithub, FaCoffee } from "react-icons/fa";
 interface FooterProps {}
 
 export const Footer: FunctionalComponent<FooterProps> = () => (
-  <section class="js-end ce-rev-honey-dark fld-row ai-ctr jc-spb pwx-5 pwy-4 bra-1 bwa-1">
+  <section class="js-end ce-rev-honey fld-row ai-ctr jc-spb pwx-5 pwy-4 bra-1 bwa-1">
     <span>
       by{" "}
       <a
