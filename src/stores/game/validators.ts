@@ -17,12 +17,6 @@ export const SaveCodec: C.Codec<unknown, Save> = C.type({
   found: C.array(C.string),
 });
 
-/** GameState */
-export const GameStateCodec = C.type({
-  games: C.record(GameCodec),
-});
-export type GameStateCodec = C.TypeOf<typeof GameStateCodec>;
-
 /** Save State */
 export const SaveStateCodec = C.type({
   saves: C.record(SaveCodec),

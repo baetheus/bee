@@ -24,10 +24,17 @@ import {
   Notice,
   Save,
   foundToScore,
+  wordToScore,
 } from "./consts";
 import { GamesCodec, SaveStateCodec } from "./validators";
 import { mapDecode } from "../../libs/ajax";
 import { settingsStore, failureBuzz, successBuzz } from "../settings";
+import {
+  notificationsStore,
+  failureNotice,
+  infoNotice,
+  successNotice,
+} from "../notifications";
 
 /** Setup Store */
 const action = actionCreatorFactory("GAME_STORE");
@@ -40,8 +47,6 @@ export const useGameDispatch = useDispatchFactory(gameStore, useCallback);
 
 /** Lenses */
 const rootProp = Lens.fromProp<GameState>();
-
-export const notificationL = rootProp("notification");
 
 export const gamesL = rootProp("games");
 export const gameGetter = (id: string) =>
@@ -58,19 +63,6 @@ export const saveG = (id: string) => savesL.compose(saveGNN(id));
 const foundL = Lens.fromProp<Save>()("found");
 export const foundG = (id: string) => saveG(id).composeLens(foundL);
 
-/** Notifications*/
-export const setNotification = action.simple<Notice>("SET_NOTIFICATION");
-const clearNotificationRaw = action.simple("CLEAR_NOTIFICATION");
-export const clearNotification = clearNotificationRaw(undefined);
-const setNotificationCase = caseFn(setNotification, (s: GameState, { value }) =>
-  notificationL.set(some(value))(s)
-);
-const clearNotificationCase = caseFn(
-  clearNotificationRaw,
-  notificationL.set(none)
-);
-gameStore.addReducers(setNotificationCase, clearNotificationCase);
-
 /** Submit Word */
 export const submitWord = action.simple<{ id: string; guess: string }>(
   "SUBMIT_WORD"
@@ -83,24 +75,19 @@ const submitWordRunEvery = filterEvery(
 
     if (!DE.isSuccess(game)) {
       settingsStore.dispatch(failureBuzz);
-      return setNotification(badNotice("No game!"));
-    }
-
-    if (!game.value.right.dictionary.some(eqInsensitive(guess))) {
+      notificationsStore.dispatch(failureNotice("No game!"));
+    } else if (!game.value.right.dictionary.some(eqInsensitive(guess))) {
       settingsStore.dispatch(failureBuzz);
-      return from([setNotification(badNotice(`${guess}`.toUpperCase()))]);
-    }
-
-    if (save.found.some(eqInsensitive(guess))) {
+      notificationsStore.dispatch(failureNotice(guess, "Incorrect"));
+    } else if (save.found.some(eqInsensitive(guess))) {
       settingsStore.dispatch(failureBuzz);
-      return from([setNotification(badNotice("Already Found"))]);
+      notificationsStore.dispatch(infoNotice(guess, "Already Found"));
+    } else {
+      const points = wordToScore(guess);
+      settingsStore.dispatch(successBuzz);
+      notificationsStore.dispatch(successNotice(guess, `+ ${points} Points`));
+      return foundWord({ id, guess });
     }
-
-    settingsStore.dispatch(successBuzz);
-    return from([
-      setNotification(goodNotice(`${guess}`.toUpperCase())),
-      foundWord({ id, guess }),
-    ]);
   }
 );
 gameStore.addRunEverys(submitWordRunEvery);

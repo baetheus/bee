@@ -7,7 +7,6 @@ import {
   useGameStore,
   selectGameAndSaveById,
   submitWord,
-  notificationL,
   GameAndSave,
   eqGameAndSave,
 } from "../stores/game";
@@ -29,7 +28,6 @@ export const GamePage: FunctionalComponent<GamePageProps> = ({
 }) => {
   const selectGame = useCallback(selectGameAndSaveById(id), [id]);
   const [data, gameDispatch] = useGameStore(selectGame, eqGameAndSave.equals);
-  const [notification] = useGameStore(notificationL.get);
 
   const [{ details }, settingsDispatch] = useSettingsStore(identity);
 
@@ -58,7 +56,6 @@ export const GamePage: FunctionalComponent<GamePageProps> = ({
             found={save.found}
             score={score}
             details={details}
-            notification={notification}
             onDetailsChange={handleDetailsChange}
             onSubmit={handleSubmit}
           />

@@ -24,7 +24,6 @@ export type Notice = {
 };
 
 export interface GameState {
-  notification: Option<Notice>;
   games: DatumEither<Error, Record<string, Game>>;
   saves: Record<string, Save>;
 }
@@ -56,7 +55,6 @@ export const badNotice = (message: string): Notice => ({
 });
 
 export const INITIAL_GAME_STATE: GameState = {
-  notification: none,
   saves: {},
   games: initial,
 };

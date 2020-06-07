@@ -1,7 +1,7 @@
 import { h, FunctionalComponent } from "preact";
 import { useState, useCallback } from "preact/hooks";
 import { Option } from "fp-ts/es6/Option";
-import { MdRefresh, MdBackspace, MdClear, MdCheck } from "react-icons/md";
+import { MdRefresh, MdArrowBack, MdClear, MdCheck } from "react-icons/md";
 
 import { Game as GameModel, Notice } from "../../stores/game";
 import { DetailOptions } from "../../stores/settings";
@@ -10,7 +10,6 @@ import { shuffle } from "../../libs/arrays";
 import { Button } from "../Button";
 
 import { Honeycomb } from "./Honeycomb";
-import { Notification } from "./Notification";
 import { Found } from "./Found";
 import { Highlight } from "./Highlight";
 
@@ -19,7 +18,6 @@ interface GameProps {
   found: string[];
   score: number;
   details: DetailOptions;
-  notification: Option<Notice>;
   onDetailsChange?: (details: DetailOptions) => void;
   onSubmit?: (word: string) => void;
 }
@@ -31,7 +29,6 @@ export const Game: FunctionalComponent<GameProps> = ({
   found,
   score,
   details,
-  notification,
   onDetailsChange = () => {},
   onSubmit = () => {},
 }) => {
@@ -56,19 +53,12 @@ export const Game: FunctionalComponent<GameProps> = ({
     <div class="fld-col flg-4 ai-ctr vwc-p100">
       <div class="vh-2 fs-u5 ta-c fld-row ai-ctr jc-ctr ct-lighter ff-head ps-rel">
         <Highlight word={word} middle={game.middle} />
-
-        <Notification
-          notification={notification}
-          middle={game.middle}
-          word={word}
-          className="ps-abs"
-        />
       </div>
 
       <div class="fld-col ai-ctr vwc-p100">
         <div class="fld-row flg-4 jc-spb">
           <Button
-            className="pwx-4 fs-u4"
+            className="pwx-5 pwy-5 fs-u5"
             theme="ct-honey ct-disabled-on-disabled"
             hover="ct-honey-dark-on-hover"
             disabled={word.length === 0}
@@ -78,13 +68,13 @@ export const Game: FunctionalComponent<GameProps> = ({
           </Button>
 
           <Button
-            className="pwx-4 fs-u4"
+            className="pwx-5 pwy-5 fs-u5"
             theme="ct-honey ct-disabled-on-disabled"
             hover="ct-honey-dark-on-hover"
             disabled={word.length === 0}
             onClick={handleDelete}
           >
-            <MdBackspace />
+            <MdArrowBack />
           </Button>
         </div>
 
@@ -101,14 +91,14 @@ export const Game: FunctionalComponent<GameProps> = ({
           <Button
             theme="ct-honey ct-disabled-on-disabled"
             hover="ct-honey-dark-on-hover"
-            class="pwx-4 fs-u4"
+            class="pwx-5 pwy-5 fs-u5"
             onClick={handleShuffle}
           >
             <MdRefresh />
           </Button>
 
           <Button
-            className="pwx-4 fs-u4"
+            className="pwx-5 pwy-5 fs-u5"
             theme="ct-honey ct-disabled-on-disabled"
             hover="ct-honey-dark-on-hover"
             disabled={word.length <= 3 || !word.includes(game.middle)}

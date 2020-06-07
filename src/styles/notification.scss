@@ -1,0 +1,37 @@
+.notification {
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+}
+
+@-webkit-keyframes slideDown {
+  0%,
+  100% {
+    -webkit-transform: translateY(-100%);
+  }
+  10%,
+  90% {
+    -webkit-transform: translateY(0px);
+  }
+}
+@-moz-keyframes slideDown {
+  0%,
+  100% {
+    -moz-transform: translateY(-100%);
+  }
+  10%,
+  90% {
+    -moz-transform: translateY(0px);
+  }
+}
+
+.notification {
+  -webkit-transform: translateY(-100%);
+  -webkit-animation: slideDown 1.2s 100ms 1 ease forwards;
+  -moz-transform: translateY(-100%);
+  -moz-animation: slideDown 1.2s 100ms 1 ease forwards;
+  animation: slideDown 1.2s 100ms 1 ease forwards;
+}
