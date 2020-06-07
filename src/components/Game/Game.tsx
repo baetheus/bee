@@ -61,6 +61,7 @@ export const Game: FunctionalComponent<GameProps> = ({
             className="pwx-5 pwy-5 fs-u5"
             theme="ct-honey ct-disabled-on-disabled"
             hover="ct-honey-dark-on-hover"
+            radius="bra-c"
             disabled={word.length === 0}
             onClick={handleClear}
           >
@@ -71,6 +72,7 @@ export const Game: FunctionalComponent<GameProps> = ({
             className="pwx-5 pwy-5 fs-u5"
             theme="ct-honey ct-disabled-on-disabled"
             hover="ct-honey-dark-on-hover"
+            radius="bra-c"
             disabled={word.length === 0}
             onClick={handleDelete}
           >
@@ -91,6 +93,7 @@ export const Game: FunctionalComponent<GameProps> = ({
           <Button
             theme="ct-honey ct-disabled-on-disabled"
             hover="ct-honey-dark-on-hover"
+            radius="bra-c"
             class="pwx-5 pwy-5 fs-u5"
             onClick={handleShuffle}
           >
@@ -101,6 +104,7 @@ export const Game: FunctionalComponent<GameProps> = ({
             className="pwx-5 pwy-5 fs-u5"
             theme="ct-honey ct-disabled-on-disabled"
             hover="ct-honey-dark-on-hover"
+            radius="bra-c"
             disabled={word.length <= 3 || !word.includes(game.middle)}
             onClick={handleSubmit}
           >
