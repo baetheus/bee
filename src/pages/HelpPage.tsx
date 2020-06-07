@@ -26,15 +26,15 @@ export const HelpPage: FunctionalComponent<HelpPageProps> = () => (
           The puzzlies change throughout the week in size and letter choices.
         </p>
         <ul class="fld-col flg-4 ls-dot spaced">
-          <li>Monday's puzzlies will have fewer than 41 words.</li>
-          <li>Tuesday's puzzlies will have 41 to 60 words.</li>
-          <li>Wednesday's puzzlies will have 61 to 80 words.</li>
-          <li>Thursday's puzzlies will have 81 to 100 words.</li>
-          <li>Friday's puzzlies will have 101 to 120 words.</li>
-          <li>Saturday's puzzlies will have than more 120 words.</li>
+          <li>Sunday's puzzlies will have fewer than 41 words.</li>
+          <li>Monday's puzzlies will have 41 to 60 words.</li>
+          <li>Tuesday's puzzlies will have 61 to 80 words.</li>
+          <li>Wednesday's puzzlies will have 81 to 100 words.</li>
+          <li>Thursday's puzzlies will have 101 to 120 words.</li>
+          <li>Friday's puzzlies will have than more 120 words.</li>
           <li>
-            Sunday's puzzlies will have more than 120 words and will exclude the
-            letters s and d.
+            Saturday's puzzlies will have more than 120 words and will exclude
+            the letters s and d.
           </li>
         </ul>
       </section>
