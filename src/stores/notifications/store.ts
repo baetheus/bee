@@ -1,14 +1,14 @@
 import { useState, useEffect } from "preact/hooks";
-import { fromNullable } from "fp-ts/es6/Option";
 import { actionCreatorFactory } from "@nll/dux/Actions";
 import { caseFn } from "@nll/dux/Reducers";
-import { createStore } from "@nll/dux/Store";
+import { createStore, filterEvery } from "@nll/dux/Store";
 import { useStoreFactory } from "@nll/dux/React";
+import { of } from "rxjs";
+import { delay } from "rxjs/operators";
 
 import { logger } from "../../libs/dux";
 
 import type { State, Notification } from "./models";
-import { createSelector } from "reselect";
 
 const INITIAL_NOTIFICATION_STATE: State = {
   notifications: [],
@@ -42,7 +42,12 @@ const notifyReducer = caseFn(notify, (s: State, { value }) => ({
   ...s,
   notifications: s.notifications.concat(value),
 }));
-notificationsStore.addReducers(notifyReducer);
+const notifyTimeoutRunEvery = filterEvery(notify, (_, { value }) =>
+  of(close(value)).pipe(delay(1000))
+);
+notificationsStore
+  .addReducers(notifyReducer)
+  .addRunEverys(notifyTimeoutRunEvery);
 
 /**
  * Remove Notification
@@ -57,7 +62,4 @@ notificationsStore.addReducers(closeReducer);
 /**
  * Selectors
  */
-export const selectNotification = createSelector(
-  (s: State) => s.notifications,
-  (ns) => fromNullable(ns[0])
-);
+export const selectNotifications = (s: State) => s.notifications;
