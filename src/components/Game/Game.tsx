@@ -1,10 +1,9 @@
 import { h, FunctionalComponent } from "preact";
 import { useState, useCallback } from "preact/hooks";
-import { Option } from "fp-ts/es6/Option";
 import { MdRefresh, MdArrowBack, MdClear, MdCheck } from "react-icons/md";
 
-import { Game as GameModel, Notice } from "../../stores/game";
-import { DetailOptions } from "../../stores/settings";
+import { Game as GameModel } from "../../stores/game";
+import { DetailOptions, WordSortOptions } from "../../stores/settings";
 import { shuffle } from "../../libs/arrays";
 
 import { Button } from "../Button";
@@ -18,7 +17,9 @@ interface GameProps {
   found: string[];
   score: number;
   details: DetailOptions;
+  sort: WordSortOptions;
   onDetailsChange?: (details: DetailOptions) => void;
+  onSortChange?: (sort: WordSortOptions) => void;
   onSubmit?: (word: string) => void;
 }
 
@@ -29,7 +30,9 @@ export const Game: FunctionalComponent<GameProps> = ({
   found,
   score,
   details,
+  sort,
   onDetailsChange = () => {},
+  onSortChange = () => {},
   onSubmit = () => {},
 }) => {
   const [word, setWord] = useState("");
@@ -118,8 +121,10 @@ export const Game: FunctionalComponent<GameProps> = ({
         found={found}
         word={word}
         score={score}
+        sort={sort}
         details={details}
         onDetailsChange={onDetailsChange}
+        onSortChange={onSortChange}
       />
     </div>
   );

@@ -1,5 +1,5 @@
 import { h, FunctionalComponent } from "preact";
-import { useCallback } from "preact/hooks";
+import { useCallback, useMemo } from "preact/hooks";
 import { identity } from "fp-ts/es6/function";
 import { datumEither as DE } from "@nll/datum";
 
@@ -17,7 +17,9 @@ import {
   useSettingsStore,
   changeSettings,
   DetailOptions,
+  WordSortOptions,
 } from "../stores/settings";
+import { getWordSort } from "../stores/settings/const";
 
 interface GamePageProps {
   id?: string;
@@ -29,10 +31,15 @@ export const GamePage: FunctionalComponent<GamePageProps> = ({
   const selectGame = useCallback(selectGameAndSaveById(id), [id]);
   const [data, gameDispatch] = useGameStore(selectGame, eqGameAndSave.equals);
 
-  const [{ details }, settingsDispatch] = useSettingsStore(identity);
+  const [{ details, sort }, settingsDispatch] = useSettingsStore(identity);
+  const sortFn = useMemo(() => getWordSort(sort), [data, sort]);
 
   const handleDetailsChange = useCallback(
     (details: DetailOptions) => settingsDispatch(changeSettings({ details })),
+    [settingsDispatch]
+  );
+  const handleSortChange = useCallback(
+    (sort: WordSortOptions) => settingsDispatch(changeSettings({ sort })),
     [settingsDispatch]
   );
   const handleSubmit = useCallback(
@@ -52,11 +59,13 @@ export const GamePage: FunctionalComponent<GamePageProps> = ({
         ),
         ({ game, save, score }: GameAndSave) => (
           <Game
-            game={game}
-            found={save.found}
+            game={{ ...game, dictionary: sortFn(game.dictionary) }}
+            found={sortFn(save.found)}
             score={score}
             details={details}
+            sort={sort}
             onDetailsChange={handleDetailsChange}
+            onSortChange={handleSortChange}
             onSubmit={handleSubmit}
           />
         )

@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { Link } from "preact-router/match";
+import { Link } from "preact-router";
 import { GiTreeBeehive } from "react-icons/gi";
 import { MdSettings, MdHelp } from "react-icons/md";
 

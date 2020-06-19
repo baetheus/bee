@@ -5,7 +5,7 @@ import { isBefore, parseISO, startOfToday } from "date-fns";
 import { If } from "../Control";
 import { Button } from "../Button";
 
-import { DetailOptions } from "../../stores/settings";
+import { DetailOptions, WordSortOptions } from "../../stores/settings";
 import { Game } from "../../stores/game";
 import { eqInsensitive } from "../../libs/strings";
 import { notNil } from "../../libs/typeguards";
@@ -14,20 +14,41 @@ import { isIn } from "../../libs/arrays";
 interface WordListProps {
   words: string[];
   found: string[];
+  sort: WordSortOptions;
+  onSortChange: (sort: WordSortOptions) => void;
 }
 
-const WordList: FunctionalComponent<WordListProps> = ({ words, found }) => (
+const WordList: FunctionalComponent<WordListProps> = ({
+  words,
+  found,
+  sort,
+  onSortChange,
+}) => (
   <If predicate={words.length > 0}>
     {() => (
-      <ul class="fit-grid-3 fs-d2">
-        {words.map((word) => (
-          <li
-            class={found.some(eqInsensitive(word)) ? "ct-rev-honey-dark" : ""}
-          >
-            {word}
-          </li>
-        ))}
-      </ul>
+      <Fragment>
+        <ul class="fit-grid-3 fs-d2">
+          {words.map((word) => (
+            <li
+              class={found.some(eqInsensitive(word)) ? "ct-rev-honey-dark" : ""}
+            >
+              {word}
+            </li>
+          ))}
+        </ul>
+        <div class="fld-row flg-4">
+          {Object.keys(WordSortOptions).map((key: any) => (
+            <Button
+              class="fls-1-1 fld-row ai-ctr jc-ctr fs-d2"
+              theme={key === sort ? "ct-light" : "ct-lighter"}
+              hover="ct-dark"
+              onClick={() => onSortChange(key)}
+            >
+              {key}
+            </Button>
+          ))}
+        </div>
+      </Fragment>
     )}
   </If>
 );
@@ -112,18 +133,22 @@ interface FoundProps {
   details: DetailOptions;
   found: string[];
   score: number;
+  sort: WordSortOptions;
   onDetailsChange: (details: DetailOptions) => void;
+  onSortChange: (sort: WordSortOptions) => void;
   className?: string;
 }
 
 export const Found: FunctionalComponent<FoundProps> = ({
   word,
   game,
+  sort,
   found,
   score,
   details,
   className,
   onDetailsChange,
+  onSortChange,
 }) => {
   const handleWordsSelect = useCallback(
     () => onDetailsChange(DetailOptions.words),
@@ -138,9 +163,10 @@ export const Found: FunctionalComponent<FoundProps> = ({
   const handleShowAll = useCallback(() => setShowAll((s) => !s), [setShowAll]);
 
   const list = showAll ? game.dictionary : found;
-  const words = useMemo(() => list.filter((l) => l.startsWith(word)).sort(), [
+  const words = useMemo(() => list.filter((l) => l.startsWith(word)), [
     list,
     word,
+    sort,
   ]);
 
   return (
@@ -176,7 +202,14 @@ export const Found: FunctionalComponent<FoundProps> = ({
           </span>
         </div>
         <If predicate={details === "words"}>
-          {() => <WordList words={words} found={found} />}
+          {() => (
+            <WordList
+              words={words}
+              found={found}
+              sort={sort}
+              onSortChange={onSortChange}
+            />
+          )}
         </If>
 
         <If predicate={details === "stats"}>

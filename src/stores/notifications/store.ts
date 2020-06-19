@@ -40,7 +40,7 @@ export const infoNotice = (title: string, message?: string) =>
 
 const notifyReducer = caseFn(notify, (s: State, { value }) => ({
   ...s,
-  notifications: s.notifications.concat(value),
+  notifications: [value, ...s.notifications],
 }));
 const notifyTimeoutRunEvery = filterEvery(notify, (_, { value }) =>
   of(close(value)).pipe(delay(1000))

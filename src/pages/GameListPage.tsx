@@ -36,16 +36,14 @@ const toData = (data: GameAndSave[]) => {
           </span>
 
           <span class="fld-col flg-3 ai-end fs-d1">
-            <span class="fld-row flg-4">
-              <span class="cf-rev-honey-dark">
-                <strong>{score}</strong> point{score === 1 ? "" : "s"}
-              </span>
+            <span class="cf-rev-honey-dark">
+              <strong>{score}</strong> point{score === 1 ? "" : "s"}
+            </span>
 
-              <span>
-                <strong>{save.found.length}</strong>
-                <span>/</span>
-                <strong>{game.dictionary.length}</strong>
-              </span>
+            <span>
+              <strong>{save.found.length}</strong>
+              <span>/</span>
+              <strong>{game.dictionary.length}</strong>
             </span>
 
             <span class="as-end cf-light fw-d1">
