@@ -15,6 +15,7 @@ interface WordListProps {
   words: string[];
   found: string[];
   sort: WordSortOptions;
+  showAll: boolean;
   onSortChange: (sort: WordSortOptions) => void;
 }
 
@@ -22,6 +23,7 @@ const WordList: FunctionalComponent<WordListProps> = ({
   words,
   found,
   sort,
+  showAll,
   onSortChange,
 }) => (
   <If predicate={words.length > 0}>
@@ -36,18 +38,22 @@ const WordList: FunctionalComponent<WordListProps> = ({
             </li>
           ))}
         </ul>
-        <div class="fld-row flg-4">
-          {Object.keys(WordSortOptions).map((key: any) => (
-            <Button
-              class="fls-1-1 fld-row ai-ctr jc-ctr fs-d2"
-              theme={key === sort ? "ct-light" : "ct-lighter"}
-              hover="ct-dark"
-              onClick={() => onSortChange(key)}
-            >
-              {key}
-            </Button>
-          ))}
-        </div>
+        <If predicate={!showAll}>
+          {() => (
+            <div class="fld-row flg-4">
+              {Object.keys(WordSortOptions).map((key: any) => (
+                <Button
+                  class="fls-1-1 fld-row ai-ctr jc-ctr fs-d2 vw-p30"
+                  theme={key === sort ? "ct-light" : "ct-lighter"}
+                  hover="ct-dark"
+                  onClick={() => onSortChange(key)}
+                >
+                  {key}
+                </Button>
+              ))}
+            </div>
+          )}
+        </If>
       </Fragment>
     )}
   </If>
@@ -207,6 +213,7 @@ export const Found: FunctionalComponent<FoundProps> = ({
               words={words}
               found={found}
               sort={sort}
+              showAll={showAll}
               onSortChange={onSortChange}
             />
           )}

@@ -25,10 +25,10 @@ export const getWordSort = (
 ): ((words: string[]) => string[]) => {
   switch (sort) {
     case "Found":
-      return identity;
+      return (ws) => [...ws];
     case "Length":
-      return (ws) => ws.sort((a, b) => a.length - b.length);
+      return (ws) => [...ws].sort((a, b) => a.length - b.length);
     case "Alphabetic":
-      return (ws) => ws.sort((a, b) => a.localeCompare(b));
+      return (ws) => [...ws].sort((a, b) => a.localeCompare(b));
   }
 };

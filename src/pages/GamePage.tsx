@@ -32,7 +32,6 @@ export const GamePage: FunctionalComponent<GamePageProps> = ({
   const [data, gameDispatch] = useGameStore(selectGame, eqGameAndSave.equals);
 
   const [{ details, sort }, settingsDispatch] = useSettingsStore(identity);
-  const sortFn = useMemo(() => getWordSort(sort), [data, sort]);
 
   const handleDetailsChange = useCallback(
     (details: DetailOptions) => settingsDispatch(changeSettings({ details })),
@@ -57,18 +56,20 @@ export const GamePage: FunctionalComponent<GamePageProps> = ({
             error={`Game with id '${id}' does not exist!`}
           />
         ),
-        ({ game, save, score }: GameAndSave) => (
-          <Game
-            game={{ ...game, dictionary: sortFn(game.dictionary) }}
-            found={sortFn(save.found)}
-            score={score}
-            details={details}
-            sort={sort}
-            onDetailsChange={handleDetailsChange}
-            onSortChange={handleSortChange}
-            onSubmit={handleSubmit}
-          />
-        )
+        ({ game, save, score }: GameAndSave) => {
+          return (
+            <Game
+              game={game}
+              found={getWordSort(sort)(save.found)}
+              score={score}
+              details={details}
+              sort={sort}
+              onDetailsChange={handleDetailsChange}
+              onSortChange={handleSortChange}
+              onSubmit={handleSubmit}
+            />
+          );
+        }
       )(data)}
     </DefaultLayout>
   );
