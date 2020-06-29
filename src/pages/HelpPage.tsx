@@ -7,6 +7,29 @@ export const HelpPage: FunctionalComponent<HelpPageProps> = () => (
   <DefaultLayout>
     <article class="fld-col flg-6 pwa-4">
       <section class="fld-col flg-4">
+        <h1 class="fs-u4">About</h1>
+        <p>
+          I made this clone of the{" "}
+          <a href="https://www.nytimes.com/puzzles/spelling-bee">
+            New York Times Spelling Bee
+          </a>{" "}
+          because my friends and I didn't all want to pay to play.
+        </p>
+        <p>
+          As I built it I realized that I didn't like many of the aspects of the
+          original design: the small size of the buttons, the overly
+          effervescent encouragements, the lack of stats and spoilers in the
+          puzzle, and the inability to play previous puzzlies. So I "fixed"
+          these things.
+        </p>
+        <p>
+          I continue to make improvements so be sure to refresh on occasion so
+          you get the latest version. I intend to keep this puzzlie free forever
+          so I hope you enjoy!
+        </p>
+      </section>
+
+      <section class="fld-col flg-4">
         <h1 class="fs-u4">Rules</h1>
         <p>
           The goal of the puzzlie is to find all of the words that can be
