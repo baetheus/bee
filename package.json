@@ -14,7 +14,7 @@
     "@snowpack/plugin-webpack": "^1.0.5",
     "@types/css-font-loading-module": "0.0.4",
     "@types/date-fns": "^2.6.0",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "prettier": "^2.0.0",
     "rollup-plugin-scss": "^2.5.0",
     "snowpack": "^2.0.0",
