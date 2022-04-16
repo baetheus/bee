@@ -58,7 +58,10 @@ export const Game: FunctionalComponent<GameProps> = ({
         <Highlight word={word} middle={game.middle} />
       </div>
 
-      <div class="fld-col ai-ctr vwc-p100">
+      <div 
+        class="fld-col ai-ctr vwc-p100"
+        style={{userSelect: 'none'}}
+      >
         <div class="fld-row flg-4 jc-spb">
           <Button
             className="pwx-5 pwy-5 fs-u5"
