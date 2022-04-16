@@ -12,7 +12,7 @@ const highlight = (chars: string[], middle: string) => (char: string) => {
   if (middle.toLowerCase() === input) {
     return <span class="cf-rev-honey-dark bounceIn">{char}</span>;
   }
-  if (chars.indexOf(input) === -1) {
+  if (!chars.includes(input)) {
     return <span class="cf-disabled bounceIn">{char}</span>;
   }
   return <span class="bounceIn">{char}</span>;

@@ -82,7 +82,7 @@ const submitWordRunEvery = filterEvery(
     } else if (!guess.split("").every((c) => c === game.value.right.middle || game.value.right.chars.includes(c))) {
       settingsStore.dispatch(failureBuzz);
       notificationsStore.dispatch(failureNotice(guess, "Bad Letters"));
-    } else if (guess.indexOf(game.value.right.middle) === -1) {
+    } else if (!guess.includes(game.value.right.middle)) {
       settingsStore.dispatch(failureBuzz);
       notificationsStore.dispatch(failureNotice(guess, "Missing Center Letter"));
     } else if (!game.value.right.dictionary.some(eqInsensitive(guess))) {
