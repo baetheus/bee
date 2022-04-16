@@ -15,6 +15,7 @@ interface WordListProps {
   words: string[];
   found: string[];
   sort: WordSortOptions;
+  pangrams: string[];
   showAll: boolean;
   onSortChange: (sort: WordSortOptions) => void;
 }
@@ -23,6 +24,7 @@ const WordList: FunctionalComponent<WordListProps> = ({
   words,
   found,
   sort,
+  pangrams,
   showAll,
   onSortChange,
 }) => (
@@ -32,7 +34,7 @@ const WordList: FunctionalComponent<WordListProps> = ({
         <ul class="fit-grid-3 fs-d2">
           {words.map((word) => (
             <li
-              class={found.some(eqInsensitive(word)) ? "ct-rev-honey-dark" : ""}
+              class={`${found.some(eqInsensitive(word)) ? "ct-rev-honey-dark" : ""} ${pangrams.includes(word) ? "fw-u3" : ""}`}
             >
               {word}
             </li>
@@ -62,8 +64,7 @@ const WordList: FunctionalComponent<WordListProps> = ({
 interface StatsProps {
   found: string[];
   dictionary: string[];
-  chars: string[];
-  middle: string;
+  pangrams: string[];
 }
 
 const getStats = (words: string[]) => {
@@ -88,8 +89,7 @@ const getPangrams = (dictionary: string[], chars: string[], middle: string) => {
 const Stats: FunctionalComponent<StatsProps> = ({
   found,
   dictionary,
-  chars,
-  middle,
+  pangrams
 }) => {
   const dictStatsArray = useMemo(() => {
     const stats = getStats(dictionary);
@@ -99,11 +99,6 @@ const Stats: FunctionalComponent<StatsProps> = ({
     }));
   }, [dictionary]);
   const foundStats = useMemo(() => getStats(found), [found]);
-  const pangrams = useMemo(() => getPangrams(dictionary, chars, middle), [
-    dictionary,
-    chars,
-    middle,
-  ]);
   const foundPangrams = useMemo(() => found.filter(isIn(pangrams)), [
     found,
     pangrams,
@@ -175,6 +170,12 @@ export const Found: FunctionalComponent<FoundProps> = ({
     sort,
   ]);
 
+  const pangrams = useMemo(() => getPangrams(game.dictionary, game.chars, game.middle), [
+    game.dictionary,
+    game.chars,
+    game.middle,
+  ]);
+
   return (
     <div class={`fld-col ${className} bwa-1 bra-1 ce-rev-honey ova-hi`}>
       <div class="fld-row">
@@ -213,6 +214,7 @@ export const Found: FunctionalComponent<FoundProps> = ({
               words={words}
               found={found}
               sort={sort}
+              pangrams={pangrams}
               showAll={showAll}
               onSortChange={onSortChange}
             />
@@ -224,8 +226,7 @@ export const Found: FunctionalComponent<FoundProps> = ({
             <Stats
               found={found}
               dictionary={game.dictionary}
-              chars={game.chars}
-              middle={game.middle}
+              pangrams={pangrams}
             />
           )}
         </If>
