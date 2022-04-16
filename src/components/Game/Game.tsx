@@ -60,6 +60,9 @@ export const Game: FunctionalComponent<GameProps> = ({
       else if (key === "enter" && word.length > 0) {
         handleSubmit();
       }
+      else if (key === "escape") {
+        handleClear();
+      }
       else if (key.length === 1 && key >= "a" && key <= "z") {
         handleLetterClick(key);
       }
