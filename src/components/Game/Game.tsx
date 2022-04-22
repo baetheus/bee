@@ -1,5 +1,5 @@
 import { h, FunctionalComponent } from "preact";
-import { useState, useCallback } from "preact/hooks";
+import { useState, useCallback, useEffect } from "preact/hooks";
 import { MdRefresh, MdArrowBack, MdClear, MdCheck } from "react-icons/md";
 
 import { Game as GameModel } from "../../stores/game";
@@ -51,11 +51,35 @@ export const Game: FunctionalComponent<GameProps> = ({
     onSubmit(word);
     setWord("");
   }, [word, setWord, onSubmit]);
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const key = event.key.toLowerCase();
+      if (key === "backspace") {
+        handleDelete();
+      }
+      else if (key === "enter" && word.length > 0) {
+        handleSubmit();
+      }
+      else if (key === "escape") {
+        handleClear();
+      }
+      else if (key.length === 1 && key >= "a" && key <= "z") {
+        handleLetterClick(key);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    }
+  });
+
 
   return (
     <div class="fld-col flg-4 ai-ctr vwc-p100">
       <div class="vh-2 fs-u5 ta-c fld-row ai-ctr jc-ctr ct-lighter ff-head ps-rel">
-        <Highlight word={word} middle={game.middle} />
+        <Highlight chars={chars} word={word} middle={game.middle} />
       </div>
 
       <div 

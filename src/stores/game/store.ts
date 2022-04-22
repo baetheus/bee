@@ -76,9 +76,18 @@ const submitWordRunEvery = filterEvery(
     if (!DE.isSuccess(game)) {
       settingsStore.dispatch(failureBuzz);
       notificationsStore.dispatch(failureNotice("No game!"));
+    } else if (guess.length < 4) {
+      settingsStore.dispatch(failureBuzz);
+      notificationsStore.dispatch(failureNotice(guess, "Too Short"));
+    } else if (!guess.split("").every((c) => c === game.value.right.middle || game.value.right.chars.includes(c))) {
+      settingsStore.dispatch(failureBuzz);
+      notificationsStore.dispatch(failureNotice(guess, "Bad Letters"));
+    } else if (!guess.includes(game.value.right.middle)) {
+      settingsStore.dispatch(failureBuzz);
+      notificationsStore.dispatch(failureNotice(guess, "Missing Center Letter"));
     } else if (!game.value.right.dictionary.some(eqInsensitive(guess))) {
       settingsStore.dispatch(failureBuzz);
-      notificationsStore.dispatch(failureNotice(guess, "Incorrect"));
+      notificationsStore.dispatch(failureNotice(guess, "Not In Word List"));
     } else if (save.found.some(eqInsensitive(guess))) {
       settingsStore.dispatch(failureBuzz);
       notificationsStore.dispatch(infoNotice(guess, "Already Found"));

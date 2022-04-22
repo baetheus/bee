@@ -16,7 +16,7 @@ export const Button: FunctionalComponent<ButtonProps> = ({
 }) => (
   <button
     {...props}
-    class={`${theme} ${hover} bwa-0 ${radius} pwa-4 fld-row flg-3 ai-ctr crsr-pointer z-1 ${className} ${props.class}`}
+    class={`${theme} ${hover} bwa-0 ${radius} pwa-4 fld-row flg-3 ai-ctr ${props.disabled ? 'crsr-default' : 'crsr-pointer'} z-1 ${className} ${props.class}`}
   >
     {children}
   </button>
