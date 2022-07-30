@@ -1,38 +1,38 @@
-import { useState, useEffect, useCallback } from "preact/hooks";
-import { Lens, Getter } from "monocle-ts";
-import { some, none } from "fp-ts/es6/Option";
+import { useCallback, useEffect, useState } from "preact/hooks";
+import { Getter, Lens } from "monocle-ts";
+import { none, some } from "fp-ts/es6/Option";
 import { createStore, filterEvery } from "@nll/dux/Store";
 import { actionCreatorFactory } from "@nll/dux/Actions";
-import { useStoreFactory, useDispatchFactory } from "@nll/dux/React";
+import { useDispatchFactory, useStoreFactory } from "@nll/dux/React";
 import { datumEither as DE } from "@nll/datum";
-import { caseFn, asyncReducerFactory } from "@nll/dux/Reducers";
+import { asyncReducerFactory, caseFn } from "@nll/dux/Reducers";
 import { asyncExhaustMap } from "@nll/dux/Operators";
-import { isBefore, parseISO, compareDesc, endOfToday } from "date-fns";
+import { compareDesc, endOfToday, isBefore, parseISO } from "date-fns";
 import { createSelector } from "reselect";
 import { from } from "rxjs";
 import { ajax } from "rxjs/ajax";
 
-import { logger, createStateRestore } from "../../libs/dux";
+import { createStateRestore, logger } from "../../libs/dux";
 import { eqInsensitive } from "../../libs/strings";
 import {
-  INITIAL_GAME_STATE,
   badNotice,
-  goodNotice,
+  foundToScore,
+  Game,
   GameAndSave,
   GameState,
-  Game,
+  goodNotice,
+  INITIAL_GAME_STATE,
   Notice,
   Save,
-  foundToScore,
   wordToScore,
 } from "./consts";
 import { GamesCodec, SaveStateCodec } from "./validators";
 import { mapDecode } from "../../libs/ajax";
-import { settingsStore, failureBuzz, successBuzz } from "../settings";
+import { failureBuzz, settingsStore, successBuzz } from "../settings";
 import {
-  notificationsStore,
   failureNotice,
   infoNotice,
+  notificationsStore,
   successNotice,
 } from "../notifications";
 
@@ -40,7 +40,7 @@ import {
 const action = actionCreatorFactory("GAME_STORE");
 
 export const gameStore = createStore(INITIAL_GAME_STATE).addMetaReducers(
-  logger()
+  logger(),
 );
 export const useGameStore = useStoreFactory(gameStore, useState, useEffect);
 export const useGameDispatch = useDispatchFactory(gameStore, useCallback);
@@ -51,7 +51,7 @@ const rootProp = Lens.fromProp<GameState>();
 export const gamesL = rootProp("games");
 export const gameGetter = (id: string) =>
   new Getter(
-    DE.chain((r: Record<string, Game>) => DE.fromNullable<Error, Game>(r[id]))
+    DE.chain((r: Record<string, Game>) => DE.fromNullable<Error, Game>(r[id])),
   );
 export const gameG = (id: string) => gamesL.composeGetter(gameGetter(id));
 
@@ -65,7 +65,7 @@ export const foundG = (id: string) => saveG(id).composeLens(foundL);
 
 /** Submit Word */
 export const submitWord = action.simple<{ id: string; guess: string }>(
-  "SUBMIT_WORD"
+  "SUBMIT_WORD",
 );
 const submitWordRunEvery = filterEvery(
   submitWord,
@@ -79,12 +79,18 @@ const submitWordRunEvery = filterEvery(
     } else if (guess.length < 4) {
       settingsStore.dispatch(failureBuzz);
       notificationsStore.dispatch(failureNotice(guess, "Too Short"));
-    } else if (!guess.split("").every((c) => c === game.value.right.middle || game.value.right.chars.includes(c))) {
+    } else if (
+      !guess.split("").every((c) =>
+        c === game.value.right.middle || game.value.right.chars.includes(c)
+      )
+    ) {
       settingsStore.dispatch(failureBuzz);
       notificationsStore.dispatch(failureNotice(guess, "Bad Letters"));
     } else if (!guess.includes(game.value.right.middle)) {
       settingsStore.dispatch(failureBuzz);
-      notificationsStore.dispatch(failureNotice(guess, "Missing Center Letter"));
+      notificationsStore.dispatch(
+        failureNotice(guess, "Missing Center Letter"),
+      );
     } else if (!game.value.right.dictionary.some(eqInsensitive(guess))) {
       settingsStore.dispatch(failureBuzz);
       notificationsStore.dispatch(failureNotice(guess, "Not In Word List"));
@@ -97,7 +103,7 @@ const submitWordRunEvery = filterEvery(
       notificationsStore.dispatch(successNotice(guess, `+ ${points} Points`));
       return foundWord({ id, guess });
     }
-  }
+  },
 );
 gameStore.addRunEverys(submitWordRunEvery);
 
@@ -106,7 +112,7 @@ const foundWord = action.simple<{ id: string; guess: string }>("FOUND_WORD");
 const foundWordCase = caseFn(
   foundWord,
   (s: GameState, { value: { id, guess } }) =>
-    foundG(id).modify((found) => found.concat(guess))(s)
+    foundG(id).modify((found) => found.concat(guess))(s),
 );
 gameStore.addReducers(foundWordCase);
 
@@ -119,12 +125,12 @@ const getGamesRunOnce = asyncExhaustMap(getGames, getGamesHandler);
 gameStore
   .addReducers(getGamesReducer)
   .addRunOnces(getGamesRunOnce)
-  .dispatch(getGames.pending("/games.20210725.json"));
+  .dispatch(getGames.pending("/games.20220731.json"));
 
 /** Save Storage - Migrate to simple wireup in one week */
 const { wireupActions } = createStateRestore<SaveStateCodec, GameState>(
   SaveStateCodec,
-  "GAME_STORE/SAVES"
+  "GAME_STORE/SAVES",
 );
 wireupActions(gameStore, [foundWord]);
 
@@ -136,9 +142,8 @@ export const selectGameAndSaveById = (id: string) =>
         game,
         save,
         score: foundToScore(save.found),
-      })
-    )(gameDE)
-  );
+      }),
+    )(gameDE));
 
 export const selectAvailableGames = createSelector(
   gamesL.get,
@@ -156,8 +161,8 @@ export const selectAvailableGames = createSelector(
           (game): GameAndSave => {
             const save = saveGNN(game.id).get(saves);
             return { game, save, score: foundToScore(save.found) };
-          }
+          },
         )
     )(gamesDE);
-  }
+  },
 );
