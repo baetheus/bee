@@ -1,5 +1,5 @@
-import { Option, none } from "fp-ts/es6/Option";
-import * as E from "fp-ts/es6/Either";
+import { none, Option } from "fp-ts/Option";
+import * as E from "fp-ts/Either";
 import { DatumEither, initial } from "@nll/datum/DatumEither";
 import { getEq } from "@nll/datum/Datum";
 
@@ -41,8 +41,8 @@ export const eqGameAndSave = getEq(
     },
     {
       equals: (a, b) => a.game === b.game && a.save === b.save,
-    }
-  )
+    },
+  ),
 );
 
 export const goodNotice = (message: string): Notice => ({

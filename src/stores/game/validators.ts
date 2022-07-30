@@ -1,4 +1,4 @@
-import * as C from "io-ts/es6/Codec";
+import * as C from "io-ts/Codec";
 import { Game, Save } from "./consts";
 
 /** Game / Games */

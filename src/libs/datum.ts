@@ -1,8 +1,8 @@
-import { sequenceT, sequenceS } from "fp-ts/es6/Apply";
-import { identity, constant } from "fp-ts/es6/function";
+import { sequenceS, sequenceT } from "fp-ts/Apply";
+import { constant, identity } from "fp-ts/function";
 import {
-  datumEither,
   DatumEither,
+  datumEither,
   initial,
   squash,
 } from "@nll/datum/DatumEither";
@@ -13,7 +13,7 @@ export const seqTDatumEither = sequenceT(datumEither);
 export const seqSDatumEither = sequenceS(datumEither);
 
 export const fromUndefined = <E, A>(
-  de: DatumEither<E, A> | undefined
+  de: DatumEither<E, A> | undefined,
 ): DatumEither<E, A> => (notNil(de) ? de : initial);
 
 export const getOrElse = <E, A>(a: A) =>

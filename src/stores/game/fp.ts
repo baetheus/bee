@@ -1,4 +1,4 @@
-import { getObjectSemigroup } from 'fp-ts/es6/Semigroup'
-import { getSemigroup } from 'fp-ts/es6/Ord'
+import { getObjectSemigroup } from "fp-ts/Semigroup";
+import { getSemigroup } from "fp-ts/Ord";
 
-const saveSemigroup = getSemigroup()
+const saveSemigroup = getSemigroup();

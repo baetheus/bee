@@ -1,6 +1,6 @@
-import * as G from "io-ts/es6/Guard";
+import * as G from "io-ts/Guard";
 import { MetaReducer } from "@nll/dux/Store";
-import { identity } from "fp-ts/es6/function";
+import { identity } from "fp-ts/function";
 
 const ErrorAction = G.type({
   error: G.literal(true),
