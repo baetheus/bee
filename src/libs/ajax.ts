@@ -1,7 +1,7 @@
-import { Decoder } from "io-ts/es6/Decoder";
-import { draw } from "io-ts/es6/Tree";
+import { Decoder } from "io-ts/Decoder";
+import { drawTree } from "fp-ts/Tree";
 import { map } from "rxjs/operators";
-import * as E from "fp-ts/es6/Either";
+import * as E from "fp-ts/Either";
 import { Observable, of, throwError } from "rxjs";
 import { mergeMap } from "rxjs/operators";
 
@@ -19,18 +19,20 @@ export const toObservable = <L, R>(e: E.Either<L, R>): Observable<R> =>
  * and returns an observable with the Either unwrapped, the L types in the error
  * channel and the R types in the next channel.
  */
-export const fromEither = <L, R>(obs: Observable<E.Either<L, R>>): Observable<R> =>
-  obs.pipe(mergeMap(toObservable));
+export const fromEither = <L, R>(
+  obs: Observable<E.Either<L, R>>,
+): Observable<R> => obs.pipe(mergeMap(toObservable));
 
 /**
  * @name mapDecode
  * @description A pipeable observable operator factory that takes an io-ts decoder
  * and returns a pipeable operator that decodes the
  */
-export const mapDecode = <A>({ decode }: Decoder<A>) => (obs: Observable<unknown>): Observable<A> =>
-  obs.pipe(
-    map((u) => (typeof u === "string" ? JSON.parse(u) : u)),
-    map(decode),
-    map(E.mapLeft(draw)),
-    fromEither
-  );
+export const mapDecode =
+  <A>({ decode }: Decoder<A>) => (obs: Observable<unknown>): Observable<A> =>
+    obs.pipe(
+      map((u) => (typeof u === "string" ? JSON.parse(u) : u)),
+      map(decode),
+      map(E.mapLeft(drawTree)),
+      fromEither,
+    );

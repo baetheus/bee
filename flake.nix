@@ -10,7 +10,7 @@
       in
       {
         devShell = with pkgs; mkShell {
-          nativeBuildInputs = [ deno ];
+          nativeBuildInputs = [ nodejs ];
         };
       });
 }

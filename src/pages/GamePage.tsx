@@ -1,6 +1,6 @@
 import { h, FunctionalComponent } from "preact";
 import { useCallback, useMemo } from "preact/hooks";
-import { identity } from "fp-ts/es6/function";
+import { identity } from "fp-ts/function";
 import { datumEither as DE } from "@nll/datum";
 
 import {

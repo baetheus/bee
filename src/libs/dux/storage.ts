@@ -1,17 +1,17 @@
-import * as C from "io-ts/es6/Codec";
-import * as E from "fp-ts/es6/Either";
-import { draw } from "io-ts/es6/Tree";
-import { pipe } from "fp-ts/es6/pipeable";
-import { Reducer, caseFn } from "@nll/dux/Reducers";
+import * as C from "io-ts/Codec";
+import * as E from "fp-ts/Either";
+import { drawTree } from "fp-ts/Tree";
+import { pipe } from "fp-ts/pipeable";
+import { caseFn, Reducer } from "@nll/dux/Reducers";
 import {
+  ActionCreator,
   actionCreatorFactory,
   AsyncActionCreators,
-  ActionCreator,
 } from "@nll/dux/Actions";
 import { asyncConcatMap } from "@nll/dux/Operators";
-import { RunOnce, filterEvery, RunEvery, Store } from "@nll/dux/Store";
-import { of, Observable, throwError, interval } from "rxjs";
-import { mergeMap, map } from "rxjs/operators";
+import { filterEvery, RunEvery, RunOnce, Store } from "@nll/dux/Store";
+import { interval, Observable, of, throwError } from "rxjs";
+import { map, mergeMap } from "rxjs/operators";
 
 import { notNil } from "../typeguards";
 
@@ -22,13 +22,13 @@ const trySetState = <A>(codec: C.Codec<unknown, A>, key: string) => (s: A) =>
       window.localStorage.setItem(key, JSON.stringify(encoded));
       return encoded;
     },
-    () => `Failed to set state at localStorage key ${key}`
+    () => `Failed to set state at localStorage key ${key}`,
   );
 
 const tryGetState = (key: string) =>
   E.tryCatch(
     () => window.localStorage.getItem(key),
-    (_) => "Failed to get state from localStorage"
+    (_) => "Failed to get state from localStorage",
   );
 
 const tryCheckNull = (s: string | null) =>
@@ -37,11 +37,11 @@ const tryCheckNull = (s: string | null) =>
 const tryParse = (s: string) =>
   E.tryCatch(
     (): unknown => JSON.parse(s),
-    (_) => "Failed to parse json"
+    (_) => "Failed to parse json",
   );
 
 const tryDecode = <S>(codec: C.Codec<unknown, S>) => (s: unknown) =>
-  pipe(codec.decode(s), E.mapLeft(draw));
+  pipe(codec.decode(s), E.mapLeft(drawTree));
 
 const throwLeft = <E, A>(obs: Observable<E.Either<E, A>>) =>
   obs.pipe(mergeMap((v) => (E.isLeft(v) ? throwError(v.left) : of(v.right))));
@@ -50,7 +50,7 @@ type StorageAction<A> = AsyncActionCreators<string, A, string>;
 
 const getStateFactory = <A, B extends A>(
   codec: C.Codec<unknown, A>,
-  getStateActions: StorageAction<A>
+  getStateActions: StorageAction<A>,
 ): RunOnce<B> =>
   asyncConcatMap(getStateActions, (key) =>
     of(
@@ -58,14 +58,13 @@ const getStateFactory = <A, B extends A>(
         tryGetState(key),
         E.chain(tryCheckNull),
         E.chain(tryParse),
-        E.chain(tryDecode(codec))
-      )
-    ).pipe(throwLeft)
-  );
+        E.chain(tryDecode(codec)),
+      ),
+    ).pipe(throwLeft));
 
 const setStateFactory = <A, B extends A>(
   codec: C.Codec<unknown, A>,
-  setStateActions: StorageAction<unknown>
+  setStateActions: StorageAction<unknown>,
 ): RunEvery<B> =>
   filterEvery(setStateActions.pending, (state, { value: params }) => {
     const result = trySetState(codec, params)(state);
@@ -75,16 +74,19 @@ const setStateFactory = <A, B extends A>(
     return setStateActions.success({ result: result.right, params });
   });
 
-const intervalFactory = <A>({ pending }: StorageAction<unknown>) => (
+const intervalFactory = <A>({ pending }: StorageAction<unknown>) =>
+(
   key: string,
-  period: number
-): RunOnce<A> => () => interval(period).pipe(map(() => pending(key)));
+  period: number,
+): RunOnce<A> =>
+() => interval(period).pipe(map(() => pending(key)));
 
 const actionMapFactory = (
   setState: ActionCreator<string>,
   key: string,
-  creators: ActionCreator<any>[]
-): RunEvery<any> => (_, action) => {
+  creators: ActionCreator<any>[],
+): RunEvery<any> =>
+(_, action) => {
   if (creators.some((c) => c.match(action))) {
     return setState(key);
   }
@@ -104,7 +106,7 @@ const setStateCaseFactory = <A, B extends A>({
  * @example
  * import { createStore } from '@nll/dux/Store';
  * import { caseFn } from '@nll/dux/Reducers';
- * import * as C from 'io-ts/es6/Codec'
+ * import * as C from 'io-ts/Codec'
  *
  * type State = { count: number };
  * const StateCodec = C.type({ count: C.number });
@@ -116,7 +118,7 @@ const setStateCaseFactory = <A, B extends A>({
  */
 export const createStateRestore = <A, B extends A>(
   codec: C.Codec<unknown, A>,
-  key: string
+  key: string,
 ) => {
   const creator = actionCreatorFactory(key);
 
@@ -146,13 +148,13 @@ export const createStateRestore = <A, B extends A>(
   // Wireup Store With Actions
   const wireupActions = (
     store: Store<B>,
-    actions: ActionCreator<any>[]
+    actions: ActionCreator<any>[],
   ): Store<B> => {
     store
       .addReducers(getStateCase)
       .addRunEverys(
         setStateRunEvery,
-        actionMapFactory(setState.pending, key, actions)
+        actionMapFactory(setState.pending, key, actions),
       )
       .addRunOnces(getStateRunOnce)
       .dispatch(getState.pending(key));

@@ -1,12 +1,11 @@
 import { h, FunctionalComponent } from "preact";
-import { useState } from "preact/hooks";
 import { useTransition, SpringConfig, animated } from "react-spring";
-
 import {
   selectNotifications,
   useNotifications,
   Notification as NotificationModel,
 } from "../../stores/notifications";
+
 import { notNil } from "../../libs/typeguards";
 
 import { If, Map } from "../Control";

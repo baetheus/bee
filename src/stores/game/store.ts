@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "preact/hooks";
 import { Getter, Lens } from "monocle-ts";
-import { none, some } from "fp-ts/es6/Option";
+import { none, some } from "fp-ts/Option";
 import { createStore, filterEvery } from "@nll/dux/Store";
 import { actionCreatorFactory } from "@nll/dux/Actions";
 import { useDispatchFactory, useStoreFactory } from "@nll/dux/React";

@@ -1,6 +1,6 @@
 import { h, FunctionalComponent } from "preact";
 import { useCallback } from "preact/hooks";
-import { identity } from "fp-ts/es6/function";
+import { identity } from "fp-ts/function";
 import { MdVibration } from "react-icons/md";
 
 import { useSettingsStore, changeSettings } from "../stores/settings";
