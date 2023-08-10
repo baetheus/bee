@@ -1,5 +1,5 @@
 import { h, FunctionalComponent } from "preact";
-import { FaGithub, FaCoffee } from "react-icons/fa";
+import { FaGithub } from "react-icons/fa";
 
 interface FooterProps {}
 
@@ -17,14 +17,6 @@ export const Footer: FunctionalComponent<FooterProps> = () => (
     </span>
 
     <section class="fld-row flg-4">
-      <a
-        href="https://www.buymeacoffee.com/baetheus"
-        label="Link to Donation Page"
-        class="cf-rev-honey-dark fs-u4 sq-px32 fld-row ai-ctr jc-ctr"
-      >
-        <FaCoffee />
-      </a>
-
       <a
         href="https://github.com/baetheus/bee"
         label="Link to Source Code"
