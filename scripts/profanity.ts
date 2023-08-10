@@ -70,4 +70,7 @@ export const bannedWords = [
   "pommy",
   "whitey",
   "whiteys",
+  // Added 20230427
+  "faggot",
+  "faggoting",
 ];
