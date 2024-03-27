@@ -184,3 +184,8 @@ textarea:focus {
 .fls-1-1-last > :last-child {
   flex: 1 1 auto;
 }
+
+/* Try to disable tap to zoom globally */
+* {
+  touch-action: manipulation;
+}
