@@ -1,0 +1,47 @@
+{
+  "version": "4",
+  "remote": {
+    "https://deno.land/std@0.102.0/_util/assert.ts": "2f868145a042a11d5ad0a3c748dcf580add8a0dbc0e876eaa0026303a5488f58",
+    "https://deno.land/std@0.102.0/flags/mod.ts": "0994240ad009980e46bc3bb1314e9469c7241617e4345b27afc82097fdbef841",
+    "https://deno.land/x/date_fns@v2.22.1/_lib/requiredArgs/index.ts": "4be7299a12120b86d47cf33ff59c8433be40cdc010c411444e1a118de4a2212e",
+    "https://deno.land/x/date_fns@v2.22.1/_lib/toInteger/index.ts": "cba0112f6f9d9c8a13e00de7cc3991363a8a45d0798aa18eef25e8bbadf2e246",
+    "https://deno.land/x/date_fns@v2.22.1/addDays/index.ts": "f42e29e1c38f5f329fcb6f4c161c7886100d787e2b49461a78c05156800fae04",
+    "https://deno.land/x/date_fns@v2.22.1/getDay/index.ts": "b50c4f0948a188a52e8b8820a6c504e3de1f7f7fd679e1aa81154b16aec7acd1",
+    "https://deno.land/x/date_fns@v2.22.1/toDate/index.ts": "212facd1ac2edfca2a84430dad7d96c2b65509643b9d2cd40b4f1c92a6e58aef",
+    "https://deno.land/x/fun@v1.0.0/array.ts": "f288b014c3b28c82d54c5eadbdc4e877c6a39b7a534b366de57b0822b44422e5",
+    "https://deno.land/x/fun@v1.0.0/derivations.ts": "e5a6417adc95fc6bc0d7c3096065a52362585462c8951a771cf6e2108be9ef16",
+    "https://deno.land/x/fun@v1.0.0/either.ts": "64e3a6a004b18ea594ca6881615c9c10657a850d414a0095d16cb910ab4a0a89",
+    "https://deno.land/x/fun@v1.0.0/fns.ts": "98442bb635b45d77141450e7d2ba7adbf7d930783ed76fc5c54d89aac91c15e0",
+    "https://deno.land/x/fun@v1.0.0/option.ts": "92b378639701845c4acdff50d52e6fba0366e3cd92c4bbc721d6b5d2c0bf66d3",
+    "https://deno.land/x/fun@v1.0.0/record.ts": "7e9d95472eb9bbcf0e8a3d16ae829cd6f1569dc30855ec68dee322933bf00d34",
+    "https://deno.land/x/fun@v1.0.0/schemable/decode_error.ts": "a4909251da47851d449f8b56b1f482528df1827919ddccff6ca43a20128ed2da",
+    "https://deno.land/x/fun@v1.0.0/schemable/decoder.ts": "30f52faabcc962b1b4ae5c6e319831244d5e654b928a30acdaf4f1340090f923",
+    "https://deno.land/x/fun@v1.0.0/schemable/guard.ts": "f6b3089fa403fe84e0c5378c6c4f964fe01e773d97955e5fad029aa2e57b16ac",
+    "https://deno.land/x/fun@v1.0.0/schemable/schemable.ts": "c7c864018d850d0b8d09b45883772b39c4b68d1035160120a5defa59593ab120",
+    "https://deno.land/x/fun@v1.0.0/semigroup.ts": "bbc8f7bdf252c225c61bb36a871aae2db59ddcc5184f8686f16da8bd84128c20",
+    "https://deno.land/x/fun@v1.0.0/sequence.ts": "a1f555e85ae2300479f342ece43e4169447e137ce89507657614e1a134972282",
+    "https://deno.land/x/fun@v1.0.0/tree.ts": "5b573612d18b6b4f3a8d120a0801d4d5905cda436c8e28e075c1f18ec1ff1300"
+  },
+  "workspace": {
+    "packageJson": {
+      "dependencies": [
+        "npm:@nll/css@^9.7.0",
+        "npm:@nll/datum@^3.1.0",
+        "npm:@nll/dux@^8.1.4",
+        "npm:@preact/preset-vite@^2.3.0",
+        "npm:date-fns@^2.13.0",
+        "npm:fp-ts@2.12.2",
+        "npm:io-ts@2.2.17",
+        "npm:monocle-ts@2.3.13",
+        "npm:preact-router@^3.2.1",
+        "npm:preact@10.10.0",
+        "npm:react-icons@^3.10.0",
+        "npm:react-spring@^8.0.27",
+        "npm:reselect@4",
+        "npm:sass@^1.54.0",
+        "npm:typescript@^3.9.2",
+        "npm:vite@^3.0.4"
+      ]
+    }
+  }
+}
